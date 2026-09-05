@@ -408,19 +408,18 @@
         }
 
         .final-score-row td {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            border-top: 2px solid var(--gold);
-            border-bottom: 2px solid var(--gold);
-            background: #2b2818;
+            padding: 15px 6px;
+            border-top: 2px solid #444;
+            border-bottom: 2px solid #444;
+            background: var(--head);
             color: #fff;
             font-size: 18px;
-            font-weight: 1000;
+            font-weight: 900;
         }
 
         .final-score-row td:first-child {
-            color: var(--gold);
-            letter-spacing: .4px;
+            color: #fff;
+            letter-spacing: .2px;
         }
 
         .empty-history {
@@ -461,11 +460,11 @@
 
         .print-record {
             width: 100%;
-            min-height: 199mm;
+            min-height: 190mm;
             padding: 5mm 6mm 4mm;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            overflow: visible;
             page-break-after: always;
             break-after: page;
         }
@@ -507,43 +506,47 @@
         }
 
         .print-record .table-responsive {
-            flex: 1 1 auto;
-            display: flex;
+            display: block;
             margin-bottom: 0;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .print-record .history-score-table {
             min-width: 0;
             width: 100%;
-            height: 100%;
+            height: auto;
             table-layout: fixed;
         }
 
         .print-record .history-score-table th,
         .print-record .history-score-table td {
-            padding: 5px;
-            font-size: 22px;
+            padding: 6px 5px;
+            font-size: 20px;
             line-height: 1.08;
         }
 
         .print-record .history-score-table th {
-            font-size: 22.5px;
+            font-size: 20.5px;
             vertical-align: middle;
         }
 
         .print-record .team-name {
-            font-size: 22px;
+            font-size: 20px;
         }
 
         .print-record .final-score-row td {
-            border-top-width: 3px;
-            border-bottom-width: 3px;
-            font-size: 26px;
+            padding: 10px 5px;
+            border-top: 3px solid #555;
+            border-bottom: 3px solid #555;
+            background: var(--head) !important;
+            color: #fff !important;
+            font-size: 24px;
+            font-weight: 900;
         }
 
         .print-record .final-score-row td:first-child {
-            font-size: 25px;
+            color: #fff !important;
+            font-size: 23px;
         }
 
         .print-empty {
@@ -626,9 +629,6 @@
             <h2>🎯 팀별 점수 기록표</h2>
             <div class="header-actions">
                 <button class="btn btn-gold" id="openHistoryBtn">🗂️ 이전 게임 기록 보기</button>
-                <button class="btn btn-muted" id="backupBtn">💾 기록 백업</button>
-                <button class="btn btn-muted" id="restoreBtn">📥 백업 복원</button>
-                <input type="file" id="restoreFileInput" accept=".json,application/json" hidden>
                 <button class="btn btn-danger" id="newGameBtn">전체 초기화 (새 게임)</button>
             </div>
         </div>
@@ -696,7 +696,8 @@
             기록은 현재 브라우저의 localStorage에 자동 저장되며, GitHub Pages의 같은 주소에서
             새로고침하거나 탭을 새로 열어도 유지됩니다.<br>
             다른 PC·휴대폰과 자동 동기화되지는 않으므로 중요한 기록은
-            ‘💾 기록 백업’으로 JSON 파일을 저장해두고 다른 기기에서는 ‘📥 백업 복원’을 사용하세요.
+            ‘이전 게임 기록 보기’ 화면의 ‘💾 기록 백업’으로 저장해두고,
+            다른 기기에서는 같은 화면의 ‘📥 백업 복원’을 사용하세요.
         </div>
     </main>
 
@@ -705,7 +706,9 @@
             <h2>🗂️ 이전 게임 전체 기록</h2>
             <div class="toolbar-actions">
                 <button class="btn btn-muted" id="historyBackBtn">← 점수판으로</button>
-                <button class="btn btn-muted" id="historyBackupBtn">💾 JSON 백업</button>
+                <button class="btn btn-muted" id="backupBtn">💾 기록 백업</button>
+                <button class="btn btn-muted" id="restoreBtn">📥 백업 복원</button>
+                <input type="file" id="restoreFileInput" accept=".json,application/json" hidden>
             </div>
         </div>
 
@@ -1328,8 +1331,7 @@
         }
 
         function openHistoryTab() {
-            const popup = window.open(`${baseUrl()}#history`, '_blank');
-            if (!popup) alert('새 탭을 열 수 없습니다. 브라우저의 팝업 차단 설정을 확인해주세요.');
+            window.location.hash = 'history';
         }
 
         function openPrintTab(ids) {
@@ -1339,12 +1341,7 @@
             }
 
             const encodedIds = ids.map(id => encodeURIComponent(id)).join(',');
-            const url = `${baseUrl()}#print=${encodedIds}&autoprint=1`;
-            const popup = window.open(url, '_blank');
-
-            if (!popup) {
-                alert('PDF 탭을 열 수 없습니다. 브라우저의 팝업 차단 설정을 확인해주세요.');
-            }
+            window.location.hash = `print=${encodedIds}&autoprint=1`;
         }
 
         function renderPrint(ids, autoPrint) {
@@ -1505,7 +1502,6 @@
             document.getElementById('openHistoryBtn').addEventListener('click', openHistoryTab);
 
             document.getElementById('backupBtn').addEventListener('click', exportBackup);
-            document.getElementById('historyBackupBtn').addEventListener('click', exportBackup);
 
             const restoreInput = document.getElementById('restoreFileInput');
             document.getElementById('restoreBtn').addEventListener('click', () => restoreInput.click());
@@ -1515,7 +1511,7 @@
             });
 
             document.getElementById('historyBackBtn').addEventListener('click', () => {
-                window.location.href = baseUrl();
+                window.location.hash = '';
             });
 
             document.getElementById('toggleSelectAllBtn').addEventListener('click', toggleSelectAllHistory);
@@ -1532,7 +1528,7 @@
 
             document.getElementById('printNowBtn').addEventListener('click', () => window.print());
             document.getElementById('printHistoryBtn').addEventListener('click', () => {
-                window.location.href = `${baseUrl()}#history`;
+                window.location.hash = 'history';
             });
 
             window.addEventListener('hashchange', showRoute);
