@@ -408,18 +408,38 @@
         }
 
         .final-score-row td {
-            padding: 15px 6px;
-            border-top: 2px solid #444;
-            border-bottom: 2px solid #444;
-            background: var(--head);
+            padding: 18px 7px;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+            background: linear-gradient(180deg, #35301a 0%, #262313 100%);
             color: #fff;
-            font-size: 18px;
-            font-weight: 900;
+            font-size: 22px;
+            font-weight: 1000;
+            line-height: 1.15;
+            text-shadow: 0 1px 0 rgba(0,0,0,.45);
         }
 
         .final-score-row td:first-child {
-            color: #fff;
-            letter-spacing: .2px;
+            color: var(--gold);
+            font-size: 20px;
+            font-weight: 1000;
+            letter-spacing: .7px;
+            white-space: nowrap;
+        }
+
+        .final-score-row td.team-red {
+            color: var(--red);
+            font-size: 24px;
+        }
+
+        .final-score-row td.team-blue {
+            color: var(--blue);
+            font-size: 24px;
+        }
+
+        .final-score-row td.team-green {
+            color: var(--green);
+            font-size: 24px;
         }
 
         .empty-history {
@@ -535,18 +555,37 @@
         }
 
         .print-record .final-score-row td {
-            padding: 10px 5px;
-            border-top: 3px solid #555;
-            border-bottom: 3px solid #555;
-            background: var(--head) !important;
+            padding: 12px 5px;
+            border-top: 3px solid var(--gold);
+            border-bottom: 3px solid var(--gold);
+            background: #302b17 !important;
             color: #fff !important;
-            font-size: 24px;
-            font-weight: 900;
+            font-size: 25px;
+            font-weight: 1000;
+            line-height: 1.08;
+            text-shadow: 0 1px 0 rgba(0,0,0,.4);
         }
 
         .print-record .final-score-row td:first-child {
-            color: #fff !important;
+            color: var(--gold) !important;
             font-size: 23px;
+            font-weight: 1000;
+            letter-spacing: .5px;
+        }
+
+        .print-record .final-score-row td.team-red {
+            color: var(--red) !important;
+            font-size: 27px;
+        }
+
+        .print-record .final-score-row td.team-blue {
+            color: var(--blue) !important;
+            font-size: 27px;
+        }
+
+        .print-record .final-score-row td.team-green {
+            color: var(--green) !important;
+            font-size: 27px;
         }
 
         .print-empty {
@@ -1226,7 +1265,7 @@
                         <tbody>
                             ${rows}
                             <tr class="final-score-row">
-                                <td>★ 최종점수</td>
+                                <td>★ 최종점수 ★</td>
                                 ${finalCells}
                             </tr>
                         </tbody>
