@@ -8,7 +8,7 @@
           rel="stylesheet"
           integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
           crossorigin="anonymous">
-    <title>팀별 점수 기록표 - 무료 GitHub Pages 버전</title>
+    <title>YM 점수 기록표</title>
     <style>
         :root {
             --bg: #121212;
@@ -736,15 +736,15 @@
             <h2>🎯 팀별 점수 기록표</h2>
             <div class="header-actions">
                 <button class="btn btn-gold" id="openHistoryBtn">🗂️ 이전 게임 기록 보기</button>
-                <button class="btn btn-danger" id="newGameBtn">전체 초기화 (새 게임)</button>
+                <button class="btn btn-danger" id="newGameBtn">전체 초기화</button>
             </div>
         </div>
-
+<!--
         <div class="controls">
             <input type="text" id="categoryInput" placeholder="추가할 팀 항목 이름 (예: 특별 게임)">
             <button class="btn" id="addCategoryBtn">팀 항목 추가</button>
         </div>
-
+-->
         <div class="table-responsive">
             <table id="scoreTable">
                 <thead>
@@ -791,22 +791,11 @@
             <thead>
                 <tr>
                     <th style="width:30%">팀명</th>
-                    <th class="ind-header" style="width:70%">인터렉션 점수(진행도)</th>
+                    <th class="ind-header" style="width:70%">인터렉션 점수</th>
                 </tr>
             </thead>
             <tbody id="indBody"></tbody>
         </table>
-
-        <div class="notice">
-            <strong style="color:#f1c40f;">💚 100% 무료 운영 방식</strong><br>
-            이 점수판은 외부 데이터베이스, 유료 API, 별도 서버를 사용하지 않습니다.
-            기록은 현재 브라우저의 localStorage에 자동 저장되며, GitHub Pages의 같은 주소에서
-            새로고침하거나 탭을 새로 열어도 유지됩니다.<br>
-            <span style="color:#777;">UI: Bootstrap v5.3.8 / Scoreboard v4</span><br>
-            다른 PC·휴대폰과 자동 동기화되지는 않으므로 중요한 기록은
-            ‘이전 게임 기록 보기’ 화면의 ‘💾 기록 백업’으로 저장해두고,
-            다른 기기에서는 같은 화면의 ‘📥 백업 복원’을 사용하세요.
-        </div>
     </main>
 
     <main id="historyView" class="page hidden">
@@ -819,12 +808,7 @@
                 <input type="file" id="restoreFileInput" accept=".json,application/json" hidden>
             </div>
         </div>
-
-        <p class="history-desc">
-            여러 날짜를 체크한 뒤 선택 기록만 PDF로 저장하거나, 저장된 전체 기록을 한 번에 PDF로 저장할 수 있어요.
-            우승 🏆 / 준우승 🥈 아이콘은 각 팀 열 바로 위에 표시됩니다.
-        </p>
-
+        
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
@@ -1018,7 +1002,7 @@
             const t = getGroupPlacements(totals, 'T');
             const result = Object.fromEntries(teamNames.map(team => [team, '']));
 
-            [...j.winners, ...t.winners].forEach(team => result[team] = '🏆');
+            [...j.winners, ...t.winners].forEach(team => result[team] = '🥇');
             [...j.runners, ...t.runners].forEach(team => result[team] = '🥈');
 
             return result;
@@ -1266,9 +1250,7 @@
 
         function startNewGame() {
             const ok = confirm(
-                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n" +
-                "확인 → 현재 기록 저장 후 새 판 시작\n" +
-                "취소 → 아무것도 변경하지 않음"
+                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n"
             );
 
             if (!ok) return;
@@ -1363,7 +1345,7 @@
                 list.innerHTML = `
                     <div class="empty-history">
                         아직 저장된 이전 게임 기록이 없습니다.<br>
-                        메인 점수판에서 ‘전체 초기화 (새 게임)’을 누르면 현재 판을 저장하고 새 판을 시작합니다.
+                        메인 점수판에서 ‘전체 초기화’을 누르면 현재 판을 저장하고 새 판을 시작합니다.
                     </div>
                 `;
                 updateHistorySelectionInfo();
@@ -1481,7 +1463,7 @@
 
             pages.innerHTML = records.map(record => `
                 <section class="print-record">
-                    <div class="print-date">📌 저장일시: ${escapeHtml(formatDate(record.savedAt))}</div>
+                    <div class="print-date">📌일시: ${escapeHtml(formatDate(record.savedAt))}</div>
                     <div class="section-label">📋 항목별 상세 점수</div>
                     <div class="table-responsive">
                         ${buildScoreReport(record)}
@@ -1537,11 +1519,21 @@
                 document.title = '이전 게임 전체 기록';
                 renderHistory();
             } else {
-                document.title = '게임 기록 PDF';
+                document.title = `게임기록_${getTodayYYMMDD()}`;
                 renderPrint(route.ids, route.autoPrint);
             }
         }
-
+        
+        function getTodayYYMMDD() {
+            const now = new Date();
+        
+            const yy = String(now.getFullYear()).slice(-2);
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+        
+            return `${yy}${mm}${dd}`;
+        }
+        
         function exportBackup() {
             const payload = {
                 app: 'dongju-scoreboard',
