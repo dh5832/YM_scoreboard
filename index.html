@@ -487,14 +487,17 @@
         }
 
         .print-record {
-            width: 100%;
-            min-height: 190mm;
-            padding: 5mm 6mm 4mm;
+            width: 297mm;
+            height: 210mm;
+            padding: 4mm 5mm;
+            margin: 0;
             display: flex;
             flex-direction: column;
-            overflow: visible;
+            overflow: hidden;
             page-break-after: always;
             break-after: page;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         .print-record:last-child {
@@ -505,19 +508,19 @@
         .print-date {
             display: inline-block;
             align-self: flex-start;
-            margin-bottom: 7px;
-            padding: 10px 14px;
+            margin-bottom: 4px;
+            padding: 8px 12px;
             border-left: 6px solid var(--gold);
             border-radius: 7px;
             background: #242424;
             color: #fff;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 900;
         }
 
         .print-record .section-label {
-            margin-bottom: 6px;
-            font-size: 16px;
+            margin-bottom: 4px;
+            font-size: 15px;
         }
 
         .print-record .rank-strip {
@@ -529,40 +532,72 @@
             min-height: 13mm;
         }
 
+        .print-record .score-report-wrap {
+            width: 100%;
+            height: 100%;
+            min-width: 0;
+            display: grid;
+            grid-template-rows: 13mm minmax(0, 1fr);
+        }
+
+        .print-record .score-report-wrap > .rank-strip {
+            margin-bottom: 0;
+            align-self: stretch;
+        }
+
+        .print-record .score-report-wrap > .history-score-table {
+            min-height: 0;
+        }
+
         .print-record .rank-icon {
             font-size: 38px;
         }
 
         .print-record .table-responsive {
-            display: block;
+            flex: 1 1 0;
+            min-height: 0;
+            display: flex;
             margin-bottom: 0;
-            overflow: visible;
+            overflow: hidden;
         }
 
         .print-record .history-score-table {
             min-width: 0;
             width: 100%;
-            height: auto;
+            height: 100%;
             table-layout: fixed;
         }
 
         .print-record .history-score-table th,
         .print-record .history-score-table td {
-            padding: 6px 5px;
-            font-size: 20px;
+            padding: 7px 6px;
+            font-size: 21px;
             line-height: 1.08;
+            vertical-align: middle;
+        }
+
+        .print-record .history-score-table thead tr {
+            height: 12%;
+        }
+
+        .print-record .history-score-table tbody tr:not(.final-score-row) {
+            height: 10.5%;
         }
 
         .print-record .history-score-table th {
-            font-size: 20.5px;
+            font-size: 21.5px;
             vertical-align: middle;
         }
 
         .print-record .team-name {
-            font-size: 20px;
+            font-size: 21px;
         }
 
         /* PDF에서도 Bootstrap 최종점수 강조 유지 */
+        .print-record .final-score-row {
+            height: 14.5%;
+        }
+
         .print-record .final-score-row td {
             background-color: rgba(255, 193, 7, .20) !important;
             border-top: 4px solid #ffc107 !important;
@@ -658,8 +693,11 @@
         }
 
         @media print {
-            body {
-                padding: 0;
+            html, body {
+                width: 297mm;
+                height: auto;
+                margin: 0 !important;
+                padding: 0 !important;
                 background: var(--bg);
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
