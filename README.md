@@ -40,25 +40,3 @@ GitHub Actions 워크플로는 만들 필요가 없습니다.
 - `📥 백업 복원`
 
 기능을 사용하세요.
-
-## 꼭 알아둘 점
-
-GitHub Free에서 GitHub Pages를 무료로 사용하는 이 구성은 **Public 저장소**를 사용합니다.
-따라서 `index.html` 소스 코드는 다른 사람이 볼 수 있습니다.
-
-하지만 **실제 점수 기록과 이전 게임 기록은 GitHub에 업로드되지 않습니다.**
-기록 데이터는 각 브라우저의 localStorage에만 저장됩니다.
-
-## 완전 무료로 유지하려면
-
-아래 서비스는 필요하지 않습니다.
-
-- Firebase
-- Supabase
-- 유료 서버
-- 유료 도메인
-- 유료 데이터베이스
-- GitHub Pro
-- GitHub Actions 기반 별도 배포
-
-이 프로젝트는 `index.html + .nojekyll`만으로 운영하면 됩니다.
