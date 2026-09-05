@@ -1,20 +1,3 @@
-# 팀별 점수판 — 100% 무료 GitHub Pages 버전
-
-이 버전은 **유료 서비스 없이** 사용하도록 구성되어 있습니다.
-
-## 사용 비용
-
-- GitHub Free 계정: 무료
-- 공개(Public) GitHub 저장소: 무료
-- GitHub Pages: 무료
-- `github.io` 기본 주소: 무료
-- 점수/이전기록 저장(localStorage): 무료
-- PDF 저장: 브라우저 기본 인쇄 기능 사용, 무료
-- JSON 기록 백업/복원: 무료
-- 외부 데이터베이스/API: 사용하지 않음
-- GitHub Actions: 사용하지 않음
-
-즉, 별도의 결제수단이나 서버가 필요하지 않습니다.
 
 ## GitHub에 올리는 방법
 
