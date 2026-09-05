@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="color-scheme" content="dark">
+    <title>팀별 점수 기록표</title>
+    <style>
+        :root {
+            --bg: #121212;
+            --panel: #1e1e1e;
+            --panel-2: #242424;
+            --head: #2a2a2a;
+            --border: #333;
+            --text: #e0e0e0;
+            --muted: #999;
+            --red: #ff6b6b;
+            --blue: #4dabf7;
+            --green: #51cf66;
+            --gold: #f1c40f;
+            --danger: #ff4d4d;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            padding: 15px;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        .hidden { display: none !important; }
+
+        .header-area,
+        .header-bottom,
+        .history-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-area {
+            margin-bottom: 20px;
+        }
+
+        h1, h2, h3, p { margin-top: 0; }
+
+        h2 {
+            margin-bottom: 0;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        h3 {
+            margin-bottom: 0;
+            color: var(--gold);
+        }
+
+        .header-actions,
+        .toolbar-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 6px;
+            padding: 9px 13px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+            background: #4a4a4a;
+            transition: filter .15s ease, transform .15s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover { filter: brightness(1.12); }
+        .btn:active { transform: translateY(1px); }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #121212;
+        }
+
+        .btn-danger {
+            background: #ff3b30;
+            color: #fff;
+        }
+
+        .btn-danger-soft {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-muted {
+            background: #555;
+            color: #fff;
+        }
+
+        .controls {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            min-width: 0;
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            background: #2c2c2c;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 6px;
+        }
+
+        input[type="text"]::placeholder { color: #888; }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            background: var(--panel);
+        }
+
+        #scoreTable { min-width: 900px; }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px 6px;
+        }
+
+        th {
+            background: var(--head);
+            white-space: nowrap;
+        }
+
+        .team-red { color: var(--red); font-weight: 800; }
+        .team-blue { color: var(--blue); font-weight: 800; }
+        .team-green { color: var(--green); font-weight: 800; }
+
+        .score-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .score-val {
+            min-width: 38px;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .arrow-btn {
+            border: 1px solid #555;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 12px;
+            background: #3a3a3a;
+            color: var(--text);
+        }
+
+        .category-cell {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            min-width: 120px;
+            padding-left: 5px;
+            text-align: left;
+        }
+
+        .category-name {
+            font-weight: 800;
+            word-break: keep-all;
+        }
+
+        .delete-btn {
+            border: 0;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 11px;
+            background: var(--danger);
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .total-row {
+            background: var(--head);
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .total-row td { padding: 15px 6px; }
+
+        .team-reset-row {
+            background: #222;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .team-reset-row td { padding: 8px 6px; }
+
+        .col-reset-btn {
+            width: 80%;
+            max-width: 90px;
+            border: 0;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 12px;
+            background: #555;
+            color: #fff;
+        }
+
+        .header-bottom {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        #indTable {
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .ind-header { color: var(--gold); }
+
+        .notice {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1b1b1b;
+            color: #aaa;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* History */
+        #historyView.page {
+            max-width: 1180px;
+        }
+
+        .history-topbar {
+            margin-bottom: 10px;
+        }
+
+        .history-desc {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .history-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 14px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--panel);
+        }
+
+        .selection-info {
+            flex: 1 1 170px;
+            min-width: 150px;
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .history-card {
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--panel);
+        }
+
+        .history-card.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 1px var(--gold) inset;
+        }
+
+        .history-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            background: var(--panel-2);
+        }
+
+        .history-check-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .history-check-label input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--gold);
+            flex: 0 0 auto;
+        }
+
+        .history-card-body {
+            padding: 14px 16px 18px;
+        }
+
+        .section-label {
+            margin-bottom: 10px;
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .score-report-wrap {
+            min-width: 900px;
+        }
+
+        .rank-strip {
+            display: grid;
+            grid-template-columns: 17% repeat(6, 1fr);
+            width: 100%;
+            align-items: end;
+            margin-bottom: 5px;
+        }
+
+        .rank-strip-spacer,
+        .rank-strip-cell {
+            min-height: 48px;
+        }
+
+        .rank-strip-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rank-icon {
+            display: block;
+            font-size: 38px;
+            line-height: 1;
+            filter: drop-shadow(0 0 6px rgba(255,255,255,.15));
+        }
+
+        .rank-icon.empty {
+            visibility: hidden;
+        }
+
+        .history-score-table {
+            min-width: 900px;
+            table-layout: fixed;
+        }
+
+        .history-score-table th:first-child,
+        .history-score-table td:first-child {
+            width: 17%;
+            text-align: left;
+            font-weight: 800;
+        }
+
+        .team-name {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .final-score-row td {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            background: #2b2818;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 1000;
+        }
+
+        .final-score-row td:first-child {
+            color: var(--gold);
+            letter-spacing: .4px;
+        }
+
+        .empty-history {
+            padding: 28px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--panel);
+            color: #999;
+            text-align: center;
+        }
+
+        /* Print */
+        #printView {
+            max-width: none;
+            padding: 0;
+        }
+
+        .print-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #333;
+            background: #1e1e1e;
+        }
+
+        .print-toolbar strong {
+            color: #fff;
+        }
+
+        .print-pages {
+            background: var(--bg);
+        }
+
+        .print-record {
+            width: 100%;
+            min-height: 199mm;
+            padding: 5mm 6mm 4mm;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            page-break-after: always;
+            break-after: page;
+        }
+
+        .print-record:last-child {
+            page-break-after: auto;
+            break-after: auto;
+        }
+
+        .print-date {
+            display: inline-block;
+            align-self: flex-start;
+            margin-bottom: 7px;
+            padding: 10px 14px;
+            border-left: 6px solid var(--gold);
+            border-radius: 7px;
+            background: #242424;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .print-record .section-label {
+            margin-bottom: 6px;
+            font-size: 16px;
+        }
+
+        .print-record .rank-strip {
+            margin-bottom: 2mm;
+        }
+
+        .print-record .rank-strip-spacer,
+        .print-record .rank-strip-cell {
+            min-height: 13mm;
+        }
+
+        .print-record .rank-icon {
+            font-size: 38px;
+        }
+
+        .print-record .table-responsive {
+            flex: 1 1 auto;
+            display: flex;
+            margin-bottom: 0;
+            overflow: hidden;
+        }
+
+        .print-record .history-score-table {
+            min-width: 0;
+            width: 100%;
+            height: 100%;
+            table-layout: fixed;
+        }
+
+        .print-record .history-score-table th,
+        .print-record .history-score-table td {
+            padding: 5px;
+            font-size: 22px;
+            line-height: 1.08;
+        }
+
+        .print-record .history-score-table th {
+            font-size: 22.5px;
+            vertical-align: middle;
+        }
+
+        .print-record .team-name {
+            font-size: 22px;
+        }
+
+        .print-record .final-score-row td {
+            border-top-width: 3px;
+            border-bottom-width: 3px;
+            font-size: 26px;
+        }
+
+        .print-record .final-score-row td:first-child {
+            font-size: 25px;
+        }
+
+        .print-empty {
+            max-width: 720px;
+            margin: 40px auto;
+            padding: 28px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            background: #1e1e1e;
+            color: #aaa;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 10px; }
+
+            .header-area,
+            .header-bottom,
+            .history-topbar {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .header-actions,
+            .toolbar-actions {
+                justify-content: stretch;
+            }
+
+            .header-actions .btn,
+            .toolbar-actions .btn {
+                flex: 1 1 auto;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .history-toolbar {
+                align-items: stretch;
+            }
+
+            .selection-info {
+                flex-basis: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: var(--bg);
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .print-toolbar {
+                display: none !important;
+            }
+
+            #mainView,
+            #historyView {
+                display: none !important;
+            }
+
+            #printView {
+                display: block !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main id="mainView" class="page">
+        <div class="header-area">
+            <h2>🎯 팀별 점수 기록표</h2>
+            <div class="header-actions">
+                <button class="btn btn-gold" id="openHistoryBtn">🗂️ 이전 게임 기록 보기</button>
+                <button class="btn btn-muted" id="backupBtn">💾 기록 백업</button>
+                <button class="btn btn-muted" id="restoreBtn">📥 백업 복원</button>
+                <input type="file" id="restoreFileInput" accept=".json,application/json" hidden>
+                <button class="btn btn-danger" id="newGameBtn">전체 초기화 (새 게임)</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <input type="text" id="categoryInput" placeholder="추가할 팀 항목 이름 (예: 특별 게임)">
+            <button class="btn" id="addCategoryBtn">팀 항목 추가</button>
+        </div>
+
+        <div class="table-responsive">
+            <table id="scoreTable">
+                <thead>
+                    <tr>
+                        <th style="width:16%">항목명</th>
+                        <th class="team-red" style="width:14%">레드 J</th>
+                        <th class="team-blue" style="width:14%">블루 J</th>
+                        <th class="team-green" style="width:14%">그린 J</th>
+                        <th class="team-red" style="width:14%">레드 T</th>
+                        <th class="team-blue" style="width:14%">블루 T</th>
+                        <th class="team-green" style="width:14%">그린 T</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td>총점</td>
+                        <td id="redJTotal" class="team-red">0</td>
+                        <td id="blueJTotal" class="team-blue">0</td>
+                        <td id="greenJTotal" class="team-green">0</td>
+                        <td id="redTTotal" class="team-red">0</td>
+                        <td id="blueTTotal" class="team-blue">0</td>
+                        <td id="greenTTotal" class="team-green">0</td>
+                    </tr>
+                    <tr class="team-reset-row">
+                        <td>팀 초기화</td>
+                        <td><button class="col-reset-btn" data-team-reset="redJ">0점 초기화</button></td>
+                        <td><button class="col-reset-btn" data-team-reset="blueJ">0점 초기화</button></td>
+                        <td><button class="col-reset-btn" data-team-reset="greenJ">0점 초기화</button></td>
+                        <td><button class="col-reset-btn" data-team-reset="redT">0점 초기화</button></td>
+                        <td><button class="col-reset-btn" data-team-reset="blueT">0점 초기화</button></td>
+                        <td><button class="col-reset-btn" data-team-reset="greenT">0점 초기화</button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="header-bottom">
+            <h3>👤 팀별 인터렉션 기록 (레드/블루/그린)</h3>
+            <button class="btn btn-gold" id="settleBtn">🏆 정산하여 위로 올리기</button>
+        </div>
+
+        <table id="indTable">
+            <thead>
+                <tr>
+                    <th style="width:30%">팀명</th>
+                    <th class="ind-header" style="width:70%">인터렉션 점수(진행도)</th>
+                </tr>
+            </thead>
+            <tbody id="indBody"></tbody>
+        </table>
+
+        <div class="notice">
+            기록은 이 브라우저의 저장공간(localStorage)에 자동 저장됩니다.
+            GitHub Pages에서 같은 주소로 접속하면 새로고침하거나 탭을 새로 열어도 기록이 유지됩니다.
+            다만 다른 PC·휴대폰과 자동 동기화되지는 않으므로 중요한 기록은 가끔 ‘기록 백업’을 해두는 것을 권장합니다.
+        </div>
+    </main>
+
+    <main id="historyView" class="page hidden">
+        <div class="history-topbar">
+            <h2>🗂️ 이전 게임 전체 기록</h2>
+            <div class="toolbar-actions">
+                <button class="btn btn-muted" id="historyBackBtn">← 점수판으로</button>
+                <button class="btn btn-muted" id="historyBackupBtn">💾 JSON 백업</button>
+            </div>
+        </div>
+
+        <p class="history-desc">
+            여러 날짜를 체크한 뒤 선택 기록만 PDF로 저장하거나, 저장된 전체 기록을 한 번에 PDF로 저장할 수 있어요.
+            우승 🏆 / 준우승 🥈 아이콘은 각 팀 열 바로 위에 표시됩니다.
+        </p>
+
+        <div class="history-toolbar">
+            <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
+            <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
+            <button class="btn btn-gold" id="selectedPdfBtn">📄 선택 기록 PDF 저장</button>
+            <button class="btn btn-muted" id="allPdfBtn">🖨️ 전체 기록 PDF 저장</button>
+            <button class="btn btn-danger-soft" id="clearHistoryBtn">전체 기록 삭제</button>
+        </div>
+
+        <div id="historyList"></div>
+    </main>
+
+    <main id="printView" class="hidden">
+        <div class="print-toolbar">
+            <strong>🖨️ 게임 기록 PDF 미리보기</strong>
+            <div class="toolbar-actions">
+                <button class="btn btn-muted" id="printHistoryBtn">← 이전 기록</button>
+                <button class="btn btn-gold" id="printNowBtn">PDF 저장 / 인쇄</button>
+            </div>
+        </div>
+        <div class="print-pages" id="printPages"></div>
+    </main>
+
+    <script>
+        'use strict';
+
+        const APP = {
+            version: 2,
+            keys: {
+                current: 'dongju.scoreboard.current.v2',
+                interaction: 'dongju.scoreboard.interaction.v2',
+                history: 'dongju.scoreboard.history.v2'
+            },
+            legacyKeys: {
+                current: 'teamScoreData_v4',
+                interaction: 'bottomInteractionData_v4',
+                history: 'teamScoreGameHistory_v1'
+            },
+            historyLimit: 50
+        };
+
+        const defaultCategories = ['출석', '단복착용', '핸드북', '암송', '성경읽기', '인터렉션', '추가점수'];
+        const teamNames = ['redJ', 'blueJ', 'greenJ', 'redT', 'blueT', 'greenT'];
+
+        const teamMeta = {
+            redJ:   { label: '레드 J', colorClass: 'team-red', shortColor: 'red' },
+            blueJ:  { label: '블루 J', colorClass: 'team-blue', shortColor: 'blue' },
+            greenJ: { label: '그린 J', colorClass: 'team-green', shortColor: 'green' },
+            redT:   { label: '레드 T', colorClass: 'team-red', shortColor: 'red' },
+            blueT:  { label: '블루 T', colorClass: 'team-blue', shortColor: 'blue' },
+            greenT: { label: '그린 T', colorClass: 'team-green', shortColor: 'green' }
+        };
+
+        let selectedHistoryIds = new Set();
+
+        function safeParse(value, fallback) {
+            if (!value) return fallback;
+            try {
+                return JSON.parse(value);
+            } catch {
+                return fallback;
+            }
+        }
+
+        function migrateLegacyStorage() {
+            const mappings = [
+                [APP.keys.current, APP.legacyKeys.current],
+                [APP.keys.interaction, APP.legacyKeys.interaction],
+                [APP.keys.history, APP.legacyKeys.history]
+            ];
+
+            mappings.forEach(([nextKey, oldKey]) => {
+                if (localStorage.getItem(nextKey) === null) {
+                    const legacy = localStorage.getItem(oldKey);
+                    if (legacy !== null) {
+                        localStorage.setItem(nextKey, legacy);
+                    }
+                }
+            });
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        function makeEmptyScores() {
+            return Object.fromEntries(teamNames.map(team => [team, 0]));
+        }
+
+        function getCurrentData() {
+            const stored = safeParse(localStorage.getItem(APP.keys.current), null);
+
+            if (Array.isArray(stored) && stored.length) {
+                return stored.map(item => ({
+                    name: String(item.name ?? ''),
+                    isDefault: item.isDefault !== undefined
+                        ? Boolean(item.isDefault)
+                        : defaultCategories.includes(String(item.name ?? '')),
+                    scores: Object.fromEntries(
+                        teamNames.map(team => [team, Math.max(0, Number(item.scores?.[team] || 0))])
+                    )
+                }));
+            }
+
+            return defaultCategories.map(name => ({
+                name,
+                isDefault: true,
+                scores: makeEmptyScores()
+            }));
+        }
+
+        function setCurrentData(data) {
+            localStorage.setItem(APP.keys.current, JSON.stringify(data));
+        }
+
+        function getInteractionData() {
+            const saved = safeParse(localStorage.getItem(APP.keys.interaction), {});
+            return {
+                red: Math.max(0, Number(saved.red || 0)),
+                blue: Math.max(0, Number(saved.blue || 0)),
+                green: Math.max(0, Number(saved.green || 0))
+            };
+        }
+
+        function setInteractionData(data) {
+            localStorage.setItem(APP.keys.interaction, JSON.stringify(data));
+        }
+
+        function getHistory() {
+            const history = safeParse(localStorage.getItem(APP.keys.history), []);
+            return Array.isArray(history) ? history : [];
+        }
+
+        function setHistory(history) {
+            localStorage.setItem(APP.keys.history, JSON.stringify(history.slice(0, APP.historyLimit)));
+        }
+
+        function formatDate(value) {
+            const date = value ? new Date(value) : new Date();
+            if (Number.isNaN(date.getTime())) return String(value || '');
+            return date.toLocaleString('ko-KR');
+        }
+
+        function makeRecordId() {
+            if (crypto && typeof crypto.randomUUID === 'function') {
+                return crypto.randomUUID();
+            }
+            return `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+        }
+
+        function calculateTotals(teamData) {
+            const totals = makeEmptyScores();
+            (teamData || []).forEach(item => {
+                teamNames.forEach(team => {
+                    totals[team] += Math.max(0, Number(item.scores?.[team] || 0));
+                });
+            });
+            return totals;
+        }
+
+        function getGroupPlacements(totals, suffix) {
+            const group = teamNames
+                .filter(team => team.endsWith(suffix))
+                .map(team => ({ team, score: Number(totals[team] || 0) }))
+                .sort((a, b) => b.score - a.score);
+
+            const uniqueScores = [...new Set(group.map(item => item.score))].sort((a, b) => b - a);
+
+            if (!uniqueScores.length || uniqueScores[0] <= 0) {
+                return { winners: [], runners: [] };
+            }
+
+            const winnerScore = uniqueScores[0];
+            const runnerScore = uniqueScores.length > 1 ? uniqueScores[1] : null;
+
+            return {
+                winners: group.filter(item => item.score === winnerScore).map(item => item.team),
+                runners: runnerScore === null
+                    ? []
+                    : group.filter(item => item.score === runnerScore).map(item => item.team)
+            };
+        }
+
+        function getRankMap(record) {
+            const totals = calculateTotals(record.teamData || []);
+            const j = getGroupPlacements(totals, 'J');
+            const t = getGroupPlacements(totals, 'T');
+            const result = Object.fromEntries(teamNames.map(team => [team, '']));
+
+            [...j.winners, ...t.winners].forEach(team => result[team] = '🏆');
+            [...j.runners, ...t.runners].forEach(team => result[team] = '🥈');
+
+            return result;
+        }
+
+        function renderMain() {
+            const data = getCurrentData();
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            data.forEach((item, rowIndex) => {
+                const tr = document.createElement('tr');
+                tr.dataset.rowIndex = String(rowIndex);
+
+                const nameTd = document.createElement('td');
+                const wrap = document.createElement('div');
+                wrap.className = 'category-cell';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'category-name';
+                nameSpan.textContent = item.name;
+                wrap.appendChild(nameSpan);
+
+                if (!item.isDefault) {
+                    const del = document.createElement('button');
+                    del.className = 'delete-btn';
+                    del.type = 'button';
+                    del.textContent = '삭제';
+                    del.addEventListener('click', () => deleteCategory(rowIndex));
+                    wrap.appendChild(del);
+                }
+
+                nameTd.appendChild(wrap);
+                tr.appendChild(nameTd);
+
+                teamNames.forEach(team => {
+                    const td = document.createElement('td');
+                    const control = document.createElement('div');
+                    control.className = 'score-control';
+
+                    const down = document.createElement('button');
+                    down.className = 'arrow-btn';
+                    down.type = 'button';
+                    down.textContent = '▼';
+                    down.addEventListener('click', () => changeScore(rowIndex, team, -100));
+
+                    const value = document.createElement('span');
+                    value.className = 'score-val';
+                    value.textContent = String(item.scores[team]);
+
+                    const up = document.createElement('button');
+                    up.className = 'arrow-btn';
+                    up.type = 'button';
+                    up.textContent = '▲';
+                    up.addEventListener('click', () => changeScore(rowIndex, team, 100));
+
+                    control.append(down, value, up);
+                    td.appendChild(control);
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+
+            renderTotals(data);
+            renderInteraction();
+        }
+
+        function renderTotals(data = getCurrentData()) {
+            const totals = calculateTotals(data);
+            teamNames.forEach(team => {
+                document.getElementById(`${team}Total`).textContent = String(totals[team]);
+            });
+        }
+
+        function changeScore(rowIndex, team, delta) {
+            const data = getCurrentData();
+            if (!data[rowIndex]) return;
+
+            data[rowIndex].scores[team] = Math.max(
+                0,
+                Number(data[rowIndex].scores[team] || 0) + delta
+            );
+
+            setCurrentData(data);
+            renderMain();
+        }
+
+        function addCategory() {
+            const input = document.getElementById('categoryInput');
+            const name = input.value.trim();
+
+            if (!name) {
+                alert('항목 이름을 입력해주세요.');
+                return;
+            }
+
+            const data = getCurrentData();
+            data.push({
+                name,
+                isDefault: false,
+                scores: makeEmptyScores()
+            });
+
+            setCurrentData(data);
+            input.value = '';
+            renderMain();
+        }
+
+        function deleteCategory(rowIndex) {
+            if (!confirm('이 항목을 삭제하시겠습니까?')) return;
+
+            const data = getCurrentData();
+            if (!data[rowIndex] || data[rowIndex].isDefault) return;
+
+            data.splice(rowIndex, 1);
+            setCurrentData(data);
+            renderMain();
+        }
+
+        function resetTeamScore(team) {
+            if (!confirm('해당 팀의 모든 점수를 0점으로 초기화하시겠습니까?')) return;
+
+            const data = getCurrentData();
+            data.forEach(item => item.scores[team] = 0);
+            setCurrentData(data);
+            renderMain();
+        }
+
+        function renderInteraction() {
+            const scores = getInteractionData();
+            const tbody = document.getElementById('indBody');
+            tbody.innerHTML = '';
+
+            const teams = [
+                { id: 'red', label: 'Red (통합)', className: 'team-red' },
+                { id: 'blue', label: 'Blue (통합)', className: 'team-blue' },
+                { id: 'green', label: 'Green (통합)', className: 'team-green' }
+            ];
+
+            teams.forEach(team => {
+                const tr = document.createElement('tr');
+
+                const nameTd = document.createElement('td');
+                const label = document.createElement('span');
+                label.className = team.className;
+                label.textContent = team.label;
+                nameTd.appendChild(label);
+
+                const scoreTd = document.createElement('td');
+                const control = document.createElement('div');
+                control.className = 'score-control';
+
+                const down = document.createElement('button');
+                down.className = 'arrow-btn';
+                down.type = 'button';
+                down.textContent = '▼';
+                down.addEventListener('click', () => changeInteraction(team.id, -100));
+
+                const value = document.createElement('span');
+                value.className = 'score-val';
+                value.textContent = String(scores[team.id]);
+
+                const up = document.createElement('button');
+                up.className = 'arrow-btn';
+                up.type = 'button';
+                up.textContent = '▲';
+                up.addEventListener('click', () => changeInteraction(team.id, 100));
+
+                control.append(down, value, up);
+                scoreTd.appendChild(control);
+
+                tr.append(nameTd, scoreTd);
+                tbody.appendChild(tr);
+            });
+        }
+
+        function changeInteraction(team, delta) {
+            const data = getInteractionData();
+            data[team] = Math.max(0, Number(data[team] || 0) + delta);
+            setInteractionData(data);
+            renderInteraction();
+        }
+
+        function settleInteraction() {
+            const bottom = getInteractionData();
+            const ranking = [
+                { color: 'red', score: bottom.red },
+                { color: 'blue', score: bottom.blue },
+                { color: 'green', score: bottom.green }
+            ].sort((a, b) => b.score - a.score);
+
+            const distinct = [...new Set(ranking.map(item => item.score))].sort((a, b) => b - a);
+            const rewardByRank = [1000, 600, 200];
+
+            ranking.forEach(item => {
+                const rankIndex = distinct.indexOf(item.score);
+                item.reward = rewardByRank[Math.min(rankIndex, rewardByRank.length - 1)];
+            });
+
+            const data = getCurrentData();
+            const interactionRow = data.find(item => item.name === '인터렉션');
+
+            if (!interactionRow) {
+                alert("상단 표에서 '인터렉션' 항목을 찾을 수 없습니다.");
+                return;
+            }
+
+            ranking.forEach(item => {
+                interactionRow.scores[`${item.color}J`] = item.reward;
+                interactionRow.scores[`${item.color}T`] = item.reward;
+            });
+
+            setCurrentData(data);
+            renderMain();
+        }
+
+        function saveCurrentGameToHistory() {
+            const teamData = getCurrentData();
+            const record = {
+                id: makeRecordId(),
+                savedAt: new Date().toISOString(),
+                teamData,
+                bottomData: getInteractionData(),
+                totals: calculateTotals(teamData)
+            };
+
+            const history = getHistory();
+            history.unshift(record);
+            setHistory(history);
+            return record;
+        }
+
+        function resetToNewGame() {
+            const blank = defaultCategories.map(name => ({
+                name,
+                isDefault: true,
+                scores: makeEmptyScores()
+            }));
+
+            setCurrentData(blank);
+            setInteractionData({ red: 0, blue: 0, green: 0 });
+            renderMain();
+        }
+
+        function startNewGame() {
+            const ok = confirm(
+                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n" +
+                "확인 → 현재 기록 저장 후 새 판 시작\n" +
+                "취소 → 아무것도 변경하지 않음"
+            );
+
+            if (!ok) return;
+
+            saveCurrentGameToHistory();
+            resetToNewGame();
+            alert('현재 기록을 저장하고 새 게임을 시작했습니다.');
+        }
+
+        function buildRankStrip(record) {
+            const rankMap = getRankMap(record);
+
+            return `
+                <div class="rank-strip">
+                    <div class="rank-strip-spacer"></div>
+                    ${teamNames.map(team => `
+                        <div class="rank-strip-cell">
+                            <span class="rank-icon ${rankMap[team] ? '' : 'empty'}">
+                                ${rankMap[team] || '•'}
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function buildScoreReport(record) {
+            const totals = calculateTotals(record.teamData || []);
+
+            const rows = (record.teamData || []).map(item => `
+                <tr>
+                    <td>${escapeHtml(item.name)}</td>
+                    ${teamNames.map(team => `
+                        <td class="${teamMeta[team].colorClass}">
+                            ${Math.max(0, Number(item.scores?.[team] || 0))}
+                        </td>
+                    `).join('')}
+                </tr>
+            `).join('');
+
+            const finalCells = teamNames.map(team => `
+                <td class="${teamMeta[team].colorClass}">
+                    ${Math.max(0, Number(totals[team] || 0))}
+                </td>
+            `).join('');
+
+            return `
+                <div class="score-report-wrap">
+                    ${buildRankStrip(record)}
+                    <table class="history-score-table">
+                        <thead>
+                            <tr>
+                                <th>항목명</th>
+                                ${teamNames.map(team => `
+                                    <th>
+                                        <span class="team-name ${teamMeta[team].colorClass}">
+                                            ${teamMeta[team].label}
+                                        </span>
+                                    </th>
+                                `).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                            <tr class="final-score-row">
+                                <td>★ 최종점수</td>
+                                ${finalCells}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function renderHistory() {
+            const history = getHistory();
+            const list = document.getElementById('historyList');
+
+            selectedHistoryIds = new Set(
+                [...selectedHistoryIds].filter(id => history.some(record => record.id === id))
+            );
+
+            if (!history.length) {
+                list.innerHTML = `
+                    <div class="empty-history">
+                        아직 저장된 이전 게임 기록이 없습니다.<br>
+                        메인 점수판에서 ‘전체 초기화 (새 게임)’을 누르면 현재 판을 저장하고 새 판을 시작합니다.
+                    </div>
+                `;
+                updateHistorySelectionInfo();
+                return;
+            }
+
+            list.innerHTML = history.map(record => `
+                <section class="history-card ${selectedHistoryIds.has(record.id) ? 'selected' : ''}" data-history-id="${escapeHtml(record.id)}">
+                    <div class="history-card-head">
+                        <label class="history-check-label">
+                            <input type="checkbox" class="history-check" value="${escapeHtml(record.id)}" ${selectedHistoryIds.has(record.id) ? 'checked' : ''}>
+                            <span>📌 ${escapeHtml(formatDate(record.savedAt))}</span>
+                        </label>
+                        <button class="btn btn-danger-soft delete-history-btn" data-delete-id="${escapeHtml(record.id)}">삭제</button>
+                    </div>
+                    <div class="history-card-body">
+                        <div class="section-label">📋 항목별 상세 점수</div>
+                        <div class="table-responsive">
+                            ${buildScoreReport(record)}
+                        </div>
+                    </div>
+                </section>
+            `).join('');
+
+            list.querySelectorAll('.history-check').forEach(input => {
+                input.addEventListener('change', () => {
+                    if (input.checked) selectedHistoryIds.add(input.value);
+                    else selectedHistoryIds.delete(input.value);
+                    renderHistory();
+                });
+            });
+
+            list.querySelectorAll('.delete-history-btn').forEach(button => {
+                button.addEventListener('click', () => deleteHistoryRecord(button.dataset.deleteId));
+            });
+
+            updateHistorySelectionInfo();
+        }
+
+        function updateHistorySelectionInfo() {
+            document.getElementById('selectionInfo').textContent =
+                `선택된 기록 ${selectedHistoryIds.size}개`;
+
+            const total = getHistory().length;
+            document.getElementById('toggleSelectAllBtn').textContent =
+                total > 0 && selectedHistoryIds.size === total ? '전체 선택 해제' : '전체 선택';
+        }
+
+        function toggleSelectAllHistory() {
+            const history = getHistory();
+
+            if (history.length && selectedHistoryIds.size === history.length) {
+                selectedHistoryIds.clear();
+            } else {
+                selectedHistoryIds = new Set(history.map(record => record.id));
+            }
+
+            renderHistory();
+        }
+
+        function deleteHistoryRecord(id) {
+            if (!confirm('이 저장 기록을 삭제하시겠습니까?')) return;
+
+            const next = getHistory().filter(record => record.id !== id);
+            setHistory(next);
+            selectedHistoryIds.delete(id);
+            renderHistory();
+        }
+
+        function clearHistory() {
+            if (!getHistory().length) return;
+            if (!confirm('저장된 이전 게임 기록을 모두 삭제하시겠습니까?')) return;
+
+            setHistory([]);
+            selectedHistoryIds.clear();
+            renderHistory();
+        }
+
+        function baseUrl() {
+            return window.location.href.split('#')[0];
+        }
+
+        function openHistoryTab() {
+            const popup = window.open(`${baseUrl()}#history`, '_blank');
+            if (!popup) alert('새 탭을 열 수 없습니다. 브라우저의 팝업 차단 설정을 확인해주세요.');
+        }
+
+        function openPrintTab(ids) {
+            if (!ids.length) {
+                alert('PDF로 저장할 기록을 하나 이상 선택해주세요.');
+                return;
+            }
+
+            const encodedIds = ids.map(id => encodeURIComponent(id)).join(',');
+            const url = `${baseUrl()}#print=${encodedIds}&autoprint=1`;
+            const popup = window.open(url, '_blank');
+
+            if (!popup) {
+                alert('PDF 탭을 열 수 없습니다. 브라우저의 팝업 차단 설정을 확인해주세요.');
+            }
+        }
+
+        function renderPrint(ids, autoPrint) {
+            const history = getHistory();
+            const order = new Map(ids.map((id, index) => [id, index]));
+            const records = history
+                .filter(record => order.has(record.id))
+                .sort((a, b) => order.get(a.id) - order.get(b.id));
+
+            const pages = document.getElementById('printPages');
+
+            if (!records.length) {
+                pages.innerHTML = `
+                    <div class="print-empty">
+                        PDF로 표시할 기록을 찾을 수 없습니다.<br>
+                        이전 기록 화면에서 다시 선택해주세요.
+                    </div>
+                `;
+                return;
+            }
+
+            pages.innerHTML = records.map(record => `
+                <section class="print-record">
+                    <div class="print-date">📌 저장일시: ${escapeHtml(formatDate(record.savedAt))}</div>
+                    <div class="section-label">📋 항목별 상세 점수</div>
+                    <div class="table-responsive">
+                        ${buildScoreReport(record)}
+                    </div>
+                </section>
+            `).join('');
+
+            if (autoPrint) {
+                const cleanHash = `#print=${ids.map(id => encodeURIComponent(id)).join(',')}`;
+                window.history.replaceState(null, '', `${baseUrl()}${cleanHash}`);
+                setTimeout(() => window.print(), 250);
+            }
+        }
+
+        function parseRoute() {
+            const raw = window.location.hash.slice(1);
+
+            if (raw === 'history') {
+                return { mode: 'history' };
+            }
+
+            if (raw.startsWith('print=')) {
+                const query = new URLSearchParams(raw.replace(/^print=/, 'ids='));
+                const ids = (query.get('ids') || '')
+                    .split(',')
+                    .filter(Boolean)
+                    .map(value => decodeURIComponent(value));
+
+                return {
+                    mode: 'print',
+                    ids,
+                    autoPrint: query.get('autoprint') === '1'
+                };
+            }
+
+            return { mode: 'main' };
+        }
+
+        function showRoute() {
+            const route = parseRoute();
+            const mainView = document.getElementById('mainView');
+            const historyView = document.getElementById('historyView');
+            const printView = document.getElementById('printView');
+
+            mainView.classList.toggle('hidden', route.mode !== 'main');
+            historyView.classList.toggle('hidden', route.mode !== 'history');
+            printView.classList.toggle('hidden', route.mode !== 'print');
+
+            if (route.mode === 'main') {
+                document.title = '팀별 점수 기록표';
+                renderMain();
+            } else if (route.mode === 'history') {
+                document.title = '이전 게임 전체 기록';
+                renderHistory();
+            } else {
+                document.title = '게임 기록 PDF';
+                renderPrint(route.ids, route.autoPrint);
+            }
+        }
+
+        function exportBackup() {
+            const payload = {
+                app: 'dongju-scoreboard',
+                schemaVersion: APP.version,
+                exportedAt: new Date().toISOString(),
+                current: getCurrentData(),
+                interaction: getInteractionData(),
+                history: getHistory()
+            };
+
+            const blob = new Blob(
+                [JSON.stringify(payload, null, 2)],
+                { type: 'application/json;charset=utf-8' }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const stamp = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = `team-scoreboard-backup-${stamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        }
+
+        async function importBackup(file) {
+            if (!file) return;
+
+            let payload;
+            try {
+                payload = JSON.parse(await file.text());
+            } catch {
+                alert('올바른 JSON 백업 파일이 아닙니다.');
+                return;
+            }
+
+            if (!payload || payload.app !== 'dongju-scoreboard' || !Array.isArray(payload.history)) {
+                alert('이 점수판에서 만든 백업 파일이 아닙니다.');
+                return;
+            }
+
+            if (!confirm('현재 점수판과 이전 기록을 백업 파일 내용으로 교체하시겠습니까?')) {
+                return;
+            }
+
+            if (Array.isArray(payload.current)) {
+                setCurrentData(payload.current);
+            }
+
+            if (payload.interaction && typeof payload.interaction === 'object') {
+                setInteractionData(payload.interaction);
+            }
+
+            setHistory(payload.history);
+
+            alert('백업을 복원했습니다.');
+            selectedHistoryIds.clear();
+            showRoute();
+        }
+
+        function bindEvents() {
+            document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
+            document.getElementById('categoryInput').addEventListener('keydown', event => {
+                if (event.key === 'Enter') addCategory();
+            });
+
+            document.querySelectorAll('[data-team-reset]').forEach(button => {
+                button.addEventListener('click', () => resetTeamScore(button.dataset.teamReset));
+            });
+
+            document.getElementById('settleBtn').addEventListener('click', settleInteraction);
+            document.getElementById('newGameBtn').addEventListener('click', startNewGame);
+            document.getElementById('openHistoryBtn').addEventListener('click', openHistoryTab);
+
+            document.getElementById('backupBtn').addEventListener('click', exportBackup);
+            document.getElementById('historyBackupBtn').addEventListener('click', exportBackup);
+
+            const restoreInput = document.getElementById('restoreFileInput');
+            document.getElementById('restoreBtn').addEventListener('click', () => restoreInput.click());
+            restoreInput.addEventListener('change', async () => {
+                await importBackup(restoreInput.files?.[0]);
+                restoreInput.value = '';
+            });
+
+            document.getElementById('historyBackBtn').addEventListener('click', () => {
+                window.location.href = baseUrl();
+            });
+
+            document.getElementById('toggleSelectAllBtn').addEventListener('click', toggleSelectAllHistory);
+
+            document.getElementById('selectedPdfBtn').addEventListener('click', () => {
+                openPrintTab([...selectedHistoryIds]);
+            });
+
+            document.getElementById('allPdfBtn').addEventListener('click', () => {
+                openPrintTab(getHistory().map(record => record.id));
+            });
+
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+            document.getElementById('printNowBtn').addEventListener('click', () => window.print());
+            document.getElementById('printHistoryBtn').addEventListener('click', () => {
+                window.location.href = `${baseUrl()}#history`;
+            });
+
+            window.addEventListener('hashchange', showRoute);
+
+            window.addEventListener('storage', event => {
+                if ([APP.keys.current, APP.keys.interaction, APP.keys.history].includes(event.key)) {
+                    showRoute();
+                }
+            });
+        }
+
+        function init() {
+            migrateLegacyStorage();
+
+            if (localStorage.getItem(APP.keys.current) === null) {
+                setCurrentData(defaultCategories.map(name => ({
+                    name,
+                    isDefault: true,
+                    scores: makeEmptyScores()
+                })));
+            }
+
+            if (localStorage.getItem(APP.keys.interaction) === null) {
+                setInteractionData({ red: 0, blue: 0, green: 0 });
+            }
+
+            if (localStorage.getItem(APP.keys.history) === null) {
+                setHistory([]);
+            }
+
+            bindEvents();
+            showRoute();
+        }
+
+        init();
+    </script>
+</body>
+</html>
