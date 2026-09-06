@@ -2,7 +2,7 @@
 ## GitHub에 올리는 방법
 
 1. 기록백업한다
-2. json 파일 githud에 저장
+2. json 파일 github에 저장
 
 
 ## 기록은 어디에 저장되나요?
