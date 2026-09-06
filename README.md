@@ -1,22 +1,9 @@
 
 ## GitHub에 올리는 방법
 
-1. GitHub에서 새 저장소를 만듭니다.
-2. 저장소는 반드시 **Public**으로 만듭니다.
-   - GitHub Free에서 GitHub Pages를 무료로 쓰기 위한 구성입니다.
-3. 이 폴더의 아래 파일을 저장소 최상위(root)에 올립니다.
-   - `index.html`
-   - `.nojekyll`
-4. GitHub 저장소에서 **Settings → Pages**로 이동합니다.
-5. **Build and deployment**
-   - Source: `Deploy from a branch`
-   - Branch: `main`
-   - Folder: `/(root)`
-6. Save를 누릅니다.
-7. 잠시 뒤 표시되는 주소로 접속합니다.
-   - 예: `https://사용자이름.github.io/저장소이름/`
+1. 기록백업한다
+2. json 파일 githud에 저장
 
-GitHub Actions 워크플로는 만들 필요가 없습니다.
 
 ## 기록은 어디에 저장되나요?
 
