@@ -1,0 +1,201 @@
+{
+  "app": "dongju-scoreboard",
+  "schemaVersion": 2,
+  "exportedAt": "2026-09-12T11:32:56.391Z",
+  "current": [
+    {
+      "name": "출석",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "단복착용",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "핸드북",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "암송",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "성경읽기",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "인터렉션",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    },
+    {
+      "name": "추가점수",
+      "isDefault": true,
+      "scores": {
+        "redJ": 0,
+        "blueJ": 0,
+        "greenJ": 0,
+        "redT": 0,
+        "blueT": 0,
+        "greenT": 0
+      }
+    }
+  ],
+  "interaction": {
+    "red": 0,
+    "blue": 0,
+    "green": 0
+  },
+  "history": [
+    {
+      "id": "00002488-f445-4ec4-ae43-7496b81c648f",
+      "savedAt": "2026-09-06T04:45:21.770Z",
+      "teamData": [
+        {
+          "name": "출석",
+          "isDefault": true,
+          "scores": {
+            "redJ": 300,
+            "blueJ": 300,
+            "greenJ": 600,
+            "redT": 500,
+            "blueT": 500,
+            "greenT": 700
+          }
+        },
+        {
+          "name": "단복착용",
+          "isDefault": true,
+          "scores": {
+            "redJ": 200,
+            "blueJ": 200,
+            "greenJ": 500,
+            "redT": 400,
+            "blueT": 500,
+            "greenT": 600
+          }
+        },
+        {
+          "name": "핸드북",
+          "isDefault": true,
+          "scores": {
+            "redJ": 800,
+            "blueJ": 600,
+            "greenJ": 400,
+            "redT": 1000,
+            "blueT": 800,
+            "greenT": 1600
+          }
+        },
+        {
+          "name": "암송",
+          "isDefault": true,
+          "scores": {
+            "redJ": 600,
+            "blueJ": 800,
+            "greenJ": 1200,
+            "redT": 1200,
+            "blueT": 1000,
+            "greenT": 1800
+          }
+        },
+        {
+          "name": "성경읽기",
+          "isDefault": true,
+          "scores": {
+            "redJ": 300,
+            "blueJ": 300,
+            "greenJ": 1200,
+            "redT": 2700,
+            "blueT": 1500,
+            "greenT": 2700
+          }
+        },
+        {
+          "name": "인터렉션",
+          "isDefault": true,
+          "scores": {
+            "redJ": 200,
+            "blueJ": 1000,
+            "greenJ": 600,
+            "redT": 200,
+            "blueT": 1000,
+            "greenT": 600
+          }
+        },
+        {
+          "name": "추가점수",
+          "isDefault": true,
+          "scores": {
+            "redJ": 0,
+            "blueJ": 100,
+            "greenJ": 100,
+            "redT": 0,
+            "blueT": 0,
+            "greenT": 0
+          }
+        }
+      ],
+      "bottomData": {
+        "red": 1600,
+        "blue": 2900,
+        "green": 2000
+      },
+      "totals": {
+        "redJ": 2400,
+        "blueJ": 3300,
+        "greenJ": 4600,
+        "redT": 6000,
+        "blueT": 5300,
+        "greenT": 8000
+      }
+    }
+  ]
+}
