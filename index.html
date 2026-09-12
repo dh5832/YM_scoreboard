@@ -955,6 +955,17 @@
             if (Number.isNaN(date.getTime())) return String(value || '');
             return date.toLocaleString('ko-KR');
         }
+        
+        function formatDateOnly(value) {
+            const date = value ? new Date(value) : new Date();
+
+            if (Number.isNaN(date.getTime())) {
+                return String(value || '');
+            }
+
+            return date.toLocaleDateString('ko-KR');
+        }
+
 
         function makeRecordId() {
             if (crypto && typeof crypto.randomUUID === 'function') {
@@ -1357,7 +1368,7 @@
                     <div class="history-card-head">
                         <label class="history-check-label">
                             <input type="checkbox" class="history-check" value="${escapeHtml(record.id)}" ${selectedHistoryIds.has(record.id) ? 'checked' : ''}>
-                            <span>📌 ${escapeHtml(formatDate(record.savedAt))}</span>
+                            <span>📌 ${escapeHtml(formatDateOnly(record.savedAt))}</span>
                         </label>
                         <button class="btn btn-danger-soft delete-history-btn" data-delete-id="${escapeHtml(record.id)}">삭제</button>
                     </div>
@@ -1463,7 +1474,7 @@
 
             pages.innerHTML = records.map(record => `
                 <section class="print-record">
-                    <div class="print-date">📌일시: ${escapeHtml(formatDate(record.savedAt))}</div>
+                    <div class="print-date">📌일시: ${escapeHtml(formatDateOnly(record.savedAt))}</div>
                     <div class="section-label">📋 항목별 상세 점수</div>
                     <div class="table-responsive">
                         ${buildScoreReport(record)}
