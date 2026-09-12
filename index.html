@@ -963,7 +963,11 @@
                 return String(value || '');
             }
 
-            return date.toLocaleDateString('ko-KR');
+            const yy = String(date.getFullYear()).slice(-2);
+            const mm = date.getMonth() + 1;
+            const dd = date.getDate();
+
+            return `${yy}. ${mm}. ${dd}`;
         }
 
 
