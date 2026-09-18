@@ -489,15 +489,13 @@
         .print-record {
             width: 297mm;
             height: 210mm;
-            padding: 2.5mm 3.5mm;
+            padding: 3mm 4mm;
             margin: 0;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
             overflow: hidden;
             page-break-after: always;
             break-after: page;
-            page-break-inside: avoid;
-            break-inside: avoid;
         }
 
         .print-record:last-child {
@@ -554,15 +552,14 @@
         }
 
         .print-record .table-responsive {
-            flex: 1 1 0;
+            width: 100%;
+            height: 100%;
             min-height: 0;
             display: flex;
-            margin-bottom: 0;
             overflow: hidden;
         }
 
         .print-record .history-score-table {
-            min-width: 0;
             width: 100%;
             height: 100%;
             table-layout: fixed;
@@ -693,34 +690,27 @@
         }
 
         @media print {
-            html, body {
-                width: 297mm;
-                min-width: 297mm;
-                height: auto;
+            html,
+            body {
+                width: 297mm !important;
+                height: 210mm !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                background: var(--bg);
+
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
 
-            .print-pages,
+            .print-pages {
+                width: 297mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
             .print-record {
                 width: 297mm !important;
-                max-width: 297mm !important;
-            }
-
-            .print-toolbar {
-                display: none !important;
-            }
-
-            #mainView,
-            #historyView {
-                display: none !important;
-            }
-
-            #printView {
-                display: block !important;
+                height: 210mm !important;
+                margin: 0 !important;
             }
 
             @page {
