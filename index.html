@@ -489,13 +489,17 @@
         .print-record {
             width: 297mm;
             height: 210mm;
-            padding: 3mm 4mm;
+            box-sizing: border-box;
+            padding: 4mm 5mm;
             margin: 0;
+            background: var(--bg);
             display: grid;
-            grid-template-rows: auto auto 1fr;
+            grid-template-rows: auto auto minmax(0, 1fr);
             overflow: hidden;
             page-break-after: always;
             break-after: page;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         .print-record:last-child {
@@ -505,8 +509,8 @@
 
         .print-date {
             display: inline-block;
-            align-self: flex-start;
-            margin-bottom: 2px;
+            justify-self: start;
+            margin-bottom: 2mm;
             padding: 6px 10px;
             border-left: 6px solid var(--gold);
             border-radius: 7px;
@@ -517,24 +521,28 @@
         }
 
         .print-record .section-label {
-            margin-bottom: 2px;
+            margin-bottom: 1.5mm;
             font-size: 14px;
         }
 
         .print-record .rank-strip {
-            margin-bottom: 1mm;
+            margin: 0;
         }
 
         .print-record .rank-strip-spacer,
         .print-record .rank-strip-cell {
-            min-height: 10mm;
+            height: 11mm;
+            min-height: 11mm;
         }
 
         .print-record .score-report-wrap {
             width: 100%;
             height: 100%;
+            min-width: 0;
+            min-height: 0;
             display: grid;
-            grid-template-rows: 10mm minmax(0, 1fr);
+            grid-template-rows: 11mm minmax(0, 1fr);
+            overflow: hidden;
         }
 
         .print-record .score-report-wrap > .rank-strip {
@@ -549,25 +557,32 @@
         .print-record .rank-icon {
             font-size: 34px;
         }
-        
+
         .print-record .table-responsive {
-            flex: 1;
-            min-height: 0;
             width: 100%;
-            display: flex;
+            height: 100%;
+            min-width: 0;
+            min-height: 0;
+            display: block;
+            margin: 0;
+            overflow: hidden;
         }
+
         .print-record .history-score-table {
+            min-width: 0;
             width: 100%;
             height: 100%;
             table-layout: fixed;
             border-collapse: collapse;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
         }
 
         .print-record .history-score-table th,
         .print-record .history-score-table td {
-            padding: 8px 6px;
-            font-size: 21px;
-            line-height: 1.08;
+            padding: 5px 6px;
+            font-size: 20px;
+            line-height: 1.05;
             vertical-align: middle;
         }
 
@@ -580,12 +595,29 @@
         }
 
         .print-record .history-score-table th {
-            font-size: 21.5px;
+            font-size: 20.5px;
             vertical-align: middle;
         }
 
+        .print-record .history-score-table thead {
+            display: table-row-group !important;
+        }
+
+        .print-record .history-score-table tr,
+        .print-record .history-score-table th,
+        .print-record .history-score-table td {
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+
+        .print-record .history-score-table thead tr,
+        .print-record .history-score-table tbody tr {
+            height: auto !important;
+        }
+
+
         .print-record .team-name {
-            font-size: 21px;
+            font-size: 20px;
         }
 
         /* PDF에서도 Bootstrap 최종점수 강조 유지 */
@@ -604,8 +636,8 @@
         }
 
         .print-record .final-score-label {
-            font-size: 21px !important;
-            padding: 8px 14px !important;
+            font-size: 19px !important;
+            padding: 6px 12px !important;
             background: #ffc107 !important;
             color: #111 !important;
             border-radius: 999px !important;
@@ -614,9 +646,9 @@
         }
 
         .print-record .final-score-chip {
-            min-width: 92px;
-            padding: 8px 14px !important;
-            font-size: 28px !important;
+            min-width: 86px;
+            padding: 6px 12px !important;
+            font-size: 25px !important;
             line-height: 1 !important;
             font-weight: 900 !important;
             background: #151515 !important;
@@ -688,44 +720,59 @@
         }
 
         @media print {
-        @page {
-            size: A4 landscape;
-            margin: 0;
+            html, body {
+                width: 297mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: var(--bg) !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .no-print,
+            .print-toolbar {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                min-height: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                border: 0 !important;
+            }
+
+            #printView,
+            .print-pages {
+                width: 297mm !important;
+                max-width: 297mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: visible !important;
+            }
+
+            .print-record {
+                width: 297mm !important;
+                height: 210mm !important;
+                max-height: 210mm !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+            }
+
+            #mainView,
+            #historyView {
+                display: none !important;
+            }
+
+            #printView {
+                display: block !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
         }
-    
-        html,
-        body {
-            width: 297mm !important;
-            height: 210mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: #121212 !important;
-    
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-    
-        .print-pages {
-            width: 297mm !important;
-            height: auto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-    
-        .print-record {
-            width: 297mm !important;
-            height: 210mm !important;
-            margin: 0 !important;
-            padding: 4mm !important;
-    
-            display: flex !important;
-            flex-direction: column !important;
-    
-            page-break-after: always;
-            break-after: page;
-            overflow: hidden;
-        }
-    }
     </style>
 </head>
 <body>
@@ -734,7 +781,7 @@
             <h2>🎯 팀별 점수 기록표</h2>
             <div class="header-actions">
                 <button class="btn btn-gold" id="openHistoryBtn">🗂️ 이전 게임 기록 보기</button>
-                <button class="btn btn-danger" id="newGameBtn">전체 초기화</button>
+                <button class="btn btn-danger" id="newGameBtn">전체 초기화 (새 게임)</button>
             </div>
         </div>
 
@@ -742,7 +789,7 @@
             <input type="text" id="categoryInput" placeholder="추가할 팀 항목 이름 (예: 특별 게임)">
             <button class="btn" id="addCategoryBtn">팀 항목 추가</button>
         </div>
-        
+
         <div class="table-responsive">
             <table id="scoreTable">
                 <thead>
@@ -789,11 +836,22 @@
             <thead>
                 <tr>
                     <th style="width:30%">팀명</th>
-                    <th class="ind-header" style="width:70%">인터렉션 점수</th>
+                    <th class="ind-header" style="width:70%">인터렉션 점수(진행도)</th>
                 </tr>
             </thead>
             <tbody id="indBody"></tbody>
         </table>
+
+        <div class="notice">
+            <strong style="color:#f1c40f;">💚 100% 무료 운영 방식</strong><br>
+            이 점수판은 외부 데이터베이스, 유료 API, 별도 서버를 사용하지 않습니다.
+            기록은 현재 브라우저의 localStorage에 자동 저장되며, GitHub Pages의 같은 주소에서
+            새로고침하거나 탭을 새로 열어도 유지됩니다.<br>
+            <span style="color:#777;">UI: Bootstrap v5.3.8 / Scoreboard v4</span><br>
+            다른 PC·휴대폰과 자동 동기화되지는 않으므로 중요한 기록은
+            ‘이전 게임 기록 보기’ 화면의 ‘💾 기록 백업’으로 저장해두고,
+            다른 기기에서는 같은 화면의 ‘📥 백업 복원’을 사용하세요.
+        </div>
     </main>
 
     <main id="historyView" class="page hidden">
@@ -806,7 +864,12 @@
                 <input type="file" id="restoreFileInput" accept=".json,application/json" hidden>
             </div>
         </div>
-        
+
+        <p class="history-desc">
+            여러 날짜를 체크한 뒤 선택 기록만 PDF로 저장하거나, 저장된 전체 기록을 한 번에 PDF로 저장할 수 있어요.
+            우승 🏆 / 준우승 🥈 아이콘은 각 팀 열 바로 위에 표시됩니다.
+        </p>
+
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
@@ -819,7 +882,7 @@
     </main>
 
     <main id="printView" class="hidden">
-        <div class="print-toolbar">
+        <div class="print-toolbar no-print">
             <strong>🖨️ 게임 기록 PDF 미리보기</strong>
             <div class="toolbar-actions">
                 <button class="btn btn-muted" id="printHistoryBtn">← 이전 기록</button>
@@ -953,21 +1016,6 @@
             if (Number.isNaN(date.getTime())) return String(value || '');
             return date.toLocaleString('ko-KR');
         }
-        
-        function formatDateOnly(value) {
-            const date = value ? new Date(value) : new Date();
-
-            if (Number.isNaN(date.getTime())) {
-                return String(value || '');
-            }
-
-            const yy = String(date.getFullYear()).slice(-2);
-            const mm = date.getMonth() + 1;
-            const dd = date.getDate();
-
-            return `${yy}. ${mm}. ${dd}`;
-        }
-
 
         function makeRecordId() {
             if (crypto && typeof crypto.randomUUID === 'function') {
@@ -1015,7 +1063,7 @@
             const t = getGroupPlacements(totals, 'T');
             const result = Object.fromEntries(teamNames.map(team => [team, '']));
 
-            [...j.winners, ...t.winners].forEach(team => result[team] = '🥇');
+            [...j.winners, ...t.winners].forEach(team => result[team] = '🏆');
             [...j.runners, ...t.runners].forEach(team => result[team] = '🥈');
 
             return result;
@@ -1263,7 +1311,9 @@
 
         function startNewGame() {
             const ok = confirm(
-                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n"
+                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n" +
+                "확인 → 현재 기록 저장 후 새 판 시작\n" +
+                "취소 → 아무것도 변경하지 않음"
             );
 
             if (!ok) return;
@@ -1358,7 +1408,7 @@
                 list.innerHTML = `
                     <div class="empty-history">
                         아직 저장된 이전 게임 기록이 없습니다.<br>
-                        메인 점수판에서 ‘전체 초기화’을 누르면 현재 판을 저장하고 새 판을 시작합니다.
+                        메인 점수판에서 ‘전체 초기화 (새 게임)’을 누르면 현재 판을 저장하고 새 판을 시작합니다.
                     </div>
                 `;
                 updateHistorySelectionInfo();
@@ -1370,7 +1420,7 @@
                     <div class="history-card-head">
                         <label class="history-check-label">
                             <input type="checkbox" class="history-check" value="${escapeHtml(record.id)}" ${selectedHistoryIds.has(record.id) ? 'checked' : ''}>
-                            <span>📌 ${escapeHtml(formatDateOnly(record.savedAt))}</span>
+                            <span>📌 ${escapeHtml(formatDate(record.savedAt))}</span>
                         </label>
                         <button class="btn btn-danger-soft delete-history-btn" data-delete-id="${escapeHtml(record.id)}">삭제</button>
                     </div>
@@ -1476,7 +1526,7 @@
 
             pages.innerHTML = records.map(record => `
                 <section class="print-record">
-                    <div class="print-date">📌일시: ${escapeHtml(formatDateOnly(record.savedAt))}</div>
+                    <div class="print-date">📌 저장일시: ${escapeHtml(formatDate(record.savedAt))}</div>
                     <div class="section-label">📋 항목별 상세 점수</div>
                     <div class="table-responsive">
                         ${buildScoreReport(record)}
@@ -1532,21 +1582,11 @@
                 document.title = '이전 게임 전체 기록';
                 renderHistory();
             } else {
-                document.title = `게임기록_${getTodayYYMMDD()}`;
+                document.title = '게임 기록 PDF';
                 renderPrint(route.ids, route.autoPrint);
             }
         }
-        
-        function getTodayYYMMDD() {
-            const now = new Date();
-        
-            const yy = String(now.getFullYear()).slice(-2);
-            const mm = String(now.getMonth() + 1).padStart(2, '0');
-            const dd = String(now.getDate()).padStart(2, '0');
-        
-            return `${yy}${mm}${dd}`;
-        }
-        
+
         function exportBackup() {
             const payload = {
                 app: 'dongju-scoreboard',
