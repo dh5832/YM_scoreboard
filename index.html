@@ -533,7 +533,6 @@
         .print-record .score-report-wrap {
             width: 100%;
             height: 100%;
-            min-width: 0;
             display: grid;
             grid-template-rows: 10mm minmax(0, 1fr);
         }
@@ -550,19 +549,18 @@
         .print-record .rank-icon {
             font-size: 34px;
         }
-
+        
         .print-record .table-responsive {
-            width: 100%;
-            height: 100%;
+            flex: 1;
             min-height: 0;
+            width: 100%;
             display: flex;
-            overflow: hidden;
         }
-
         .print-record .history-score-table {
             width: 100%;
             height: 100%;
             table-layout: fixed;
+            border-collapse: collapse;
         }
 
         .print-record .history-score-table th,
