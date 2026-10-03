@@ -459,9 +459,9 @@
             text-align: center;
         }
 
-        /* Print */
+        /* Save / JPG Preview */
         #printView {
-            max-width: none;
+            max-width: 1180px;
             padding: 0;
         }
 
@@ -476,6 +476,7 @@
             padding: 12px 16px;
             border-bottom: 1px solid #333;
             background: #1e1e1e;
+            margin-bottom: 14px;
         }
 
         .print-toolbar strong {
@@ -483,31 +484,25 @@
         }
 
         .print-pages {
-            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: transparent;
         }
 
         .print-record {
-            width: 297mm;
-            height: 210mm;
-            padding: 3mm 4mm;
-            margin: 0;
-            display: grid;
-            grid-template-rows: auto auto 1fr;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
             overflow: hidden;
-            page-break-after: always;
-            break-after: page;
-        }
-
-        .print-record:last-child {
-            page-break-after: auto;
-            break-after: auto;
         }
 
         .print-date {
             display: inline-block;
             align-self: flex-start;
-            margin-bottom: 2px;
-            padding: 6px 10px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
             border-left: 6px solid var(--gold);
             border-radius: 7px;
             background: #242424;
@@ -517,130 +512,107 @@
         }
 
         .print-record .section-label {
-            margin-bottom: 2px;
-            font-size: 14px;
+            margin-bottom: 10px;
+            font-size: 15px;
         }
 
-        .print-record .rank-strip {
-            margin-bottom: 1mm;
-        }
-
-        .print-record .rank-strip-spacer,
-        .print-record .rank-strip-cell {
-            min-height: 10mm;
-        }
-
-        .print-record .score-report-wrap {
-            width: 100%;
-            height: 100%;
+        .record-group-grid {
             display: grid;
-            grid-template-rows: 10mm minmax(0, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
         }
 
-        .print-record .score-report-wrap > .rank-strip {
-            margin-bottom: 0;
-            align-self: stretch;
+        .record-group-card {
+            background: #191919;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 12px;
+            overflow: hidden;
         }
 
-        .print-record .score-report-wrap > .history-score-table {
-            min-height: 0;
+        .record-group-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(241, 196, 15, 0.15);
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 15px;
         }
 
-        .print-record .rank-icon {
-            font-size: 34px;
+        .group-report-wrap {
+            min-width: 0;
         }
-        
-        .print-record .table-responsive {
-            flex: 1;
-            min-height: 0;
+
+        .group-rank-strip {
+            display: grid;
+            grid-template-columns: 24% repeat(3, 1fr);
             width: 100%;
+            align-items: end;
+            margin-bottom: 4px;
+        }
+
+        .group-rank-strip-spacer,
+        .group-rank-strip-cell {
+            min-height: 42px;
+        }
+
+        .group-rank-strip-cell {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .print-record .history-score-table {
+
+        .group-rank-icon {
+            display: block;
+            font-size: 34px;
+            line-height: 1;
+            filter: drop-shadow(0 0 6px rgba(255,255,255,.15));
+        }
+
+        .group-rank-icon.empty {
+            visibility: hidden;
+        }
+
+        .group-score-table {
             width: 100%;
-            height: 100%;
             table-layout: fixed;
-            border-collapse: collapse;
+            min-width: 0;
         }
 
-        .print-record .history-score-table th,
-        .print-record .history-score-table td {
-            padding: 8px 6px;
-            font-size: 21px;
-            line-height: 1.08;
-            vertical-align: middle;
+        .group-score-table th:first-child,
+        .group-score-table td:first-child {
+            width: 24%;
+            text-align: left;
+            font-weight: 800;
         }
 
-        .print-record .history-score-table thead tr {
-            height: 9%;
+        .group-score-table .team-name {
+            font-size: 14px;
+            font-weight: 900;
         }
 
-        .print-record .history-score-table tbody tr:not(.final-score-row) {
-            height: 11%;
-        }
-
-        .print-record .history-score-table th {
-            font-size: 21.5px;
-            vertical-align: middle;
-        }
-
-        .print-record .team-name {
-            font-size: 21px;
-        }
-
-        /* PDF에서도 Bootstrap 최종점수 강조 유지 */
-        .print-record .final-score-row {
-            height: 14%;
-        }
-
-        .print-record .final-score-row td {
-            background-color: rgba(255, 193, 7, .20) !important;
-            border-top: 4px solid #ffc107 !important;
-            border-bottom: 4px solid #ffc107 !important;
-            padding: 10px 5px !important;
-            vertical-align: middle !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
+        .print-record .group-score-table th,
+        .print-record .group-score-table td {
+            padding: 10px 6px;
         }
 
         .print-record .final-score-label {
-            font-size: 21px !important;
-            padding: 8px 14px !important;
-            background: #ffc107 !important;
-            color: #111 !important;
-            border-radius: 999px !important;
-            font-weight: 900 !important;
+            font-size: 1rem !important;
+            letter-spacing: .2px;
             white-space: nowrap;
         }
 
         .print-record .final-score-chip {
-            min-width: 92px;
-            padding: 8px 14px !important;
-            font-size: 28px !important;
-            line-height: 1 !important;
-            font-weight: 900 !important;
-            background: #151515 !important;
-            border: 2px solid #666 !important;
-            border-radius: 8px !important;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
+            min-width: 74px;
+            font-size: 1.35rem !important;
+            line-height: 1;
+            background: #171717 !important;
+            border-width: 2px !important;
         }
-
-        .print-record .final-score-row td.team-red .final-score-chip {
-            color: var(--red) !important;
-            border-color: var(--red) !important;
-        }
-
-        .print-record .final-score-row td.team-blue .final-score-chip {
-            color: var(--blue) !important;
-            border-color: var(--blue) !important;
-        }
-
-        .print-record .final-score-row td.team-green .final-score-chip {
-            color: var(--green) !important;
-            border-color: var(--green) !important;
-        }
-
         .print-empty {
             max-width: 720px;
             margin: 40px auto;
@@ -653,12 +625,13 @@
             line-height: 1.7;
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 900px) {
             body { padding: 10px; }
 
             .header-area,
             .header-bottom,
-            .history-topbar {
+            .history-topbar,
+            .print-toolbar {
                 flex-direction: column;
                 align-items: stretch;
                 text-align: center;
@@ -685,193 +658,13 @@
             .selection-info {
                 flex-basis: 100%;
             }
-        }
 
-        @media print {
-            @page {
-                size: A4 landscape;
-                margin: 0;
-            }
-
-            html,
-            body {
-                width: 297mm !important;
-                min-width: 297mm !important;
-                height: auto !important;
-                min-height: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                background: #121212 !important;
-                overflow: visible !important;
-
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-
-            /* PDF에는 미리보기용 상단 툴바가 나오지 않도록 */
-            .print-toolbar {
-                display: none !important;
-                visibility: hidden !important;
-                height: 0 !important;
-                min-height: 0 !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                border: 0 !important;
-            }
-
-            /* 인쇄 시 PDF 화면만 출력 */
-            #mainView,
-            #historyView {
-                display: none !important;
-            }
-
-            #printView {
-                display: block !important;
-                width: 297mm !important;
-                max-width: 297mm !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: visible !important;
-            }
-
-            .print-pages {
-                width: 297mm !important;
-                max-width: 297mm !important;
-                height: auto !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                overflow: visible !important;
-            }
-
-            /* 기록 하나 = A4 가로 한 페이지 */
-            .print-record {
-                width: 297mm !important;
-                height: 210mm !important;
-                max-height: 210mm !important;
-                box-sizing: border-box !important;
-                margin: 0 !important;
-                padding: 4mm 5mm !important;
-
-                display: grid !important;
-                grid-template-rows: auto auto minmax(0, 1fr) !important;
-
-                overflow: hidden !important;
-                page-break-after: always !important;
-                break-after: page !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-
-            .print-record:last-child {
-                page-break-after: auto !important;
-                break-after: auto !important;
-            }
-
-            /* 날짜/제목은 작게 유지해서 표 공간 확보 */
-            .print-record .print-date {
-                align-self: start !important;
-                margin: 0 0 2mm 0 !important;
-            }
-
-            .print-record .section-label {
-                margin: 0 0 1.5mm 0 !important;
-            }
-
-            /* 남는 세로 공간 전체를 상세점수표에 배정 */
-            .print-record .table-responsive {
-                width: 100% !important;
-                height: 100% !important;
-                min-width: 0 !important;
-                min-height: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                display: block !important;
-                overflow: hidden !important;
-            }
-
-            .print-record .score-report-wrap {
-                width: 100% !important;
-                height: 100% !important;
-                min-width: 0 !important;
-                min-height: 0 !important;
-                display: grid !important;
-                grid-template-rows: 10mm minmax(0, 1fr) !important;
-                overflow: hidden !important;
-            }
-
-            .print-record .rank-strip {
-                width: 100% !important;
-                height: 10mm !important;
-                min-height: 10mm !important;
-                margin: 0 !important;
-            }
-
-            .print-record .rank-strip-spacer,
-            .print-record .rank-strip-cell {
-                height: 10mm !important;
-                min-height: 10mm !important;
-            }
-
-            /*
-             * 기존 9% / 11% / 14% 행 높이는 padding과 border까지 합쳐지며
-             * 실제 A4 높이를 넘길 수 있어 다음 페이지가 생김.
-             * 인쇄에서는 비율 높이를 해제하고 남는 공간 안에서 자동 배분.
-             */
-            .print-record .history-score-table {
-                width: 100% !important;
-                height: 100% !important;
-                min-width: 0 !important;
-                table-layout: fixed !important;
-                border-collapse: collapse !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-
-            .print-record .history-score-table thead {
-                display: table-row-group !important;
-            }
-
-            .print-record .history-score-table thead tr,
-            .print-record .history-score-table tbody tr,
-            .print-record .final-score-row {
-                height: auto !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-
-            .print-record .history-score-table th,
-            .print-record .history-score-table td {
-                padding: 5px 6px !important;
-                font-size: 20px !important;
-                line-height: 1.05 !important;
-                vertical-align: middle !important;
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-            }
-
-            .print-record .history-score-table th,
-            .print-record .team-name {
-                font-size: 20px !important;
-            }
-
-            /* 최종점수 강조는 그대로 유지하되 한 페이지를 넘지 않도록 */
-            .print-record .final-score-row td {
-                padding: 7px 5px !important;
-            }
-
-            .print-record .final-score-label {
-                font-size: 19px !important;
-                padding: 6px 12px !important;
-            }
-
-            .print-record .final-score-chip {
-                min-width: 84px !important;
-                padding: 6px 10px !important;
-                font-size: 25px !important;
+            .record-group-grid {
+                grid-template-columns: 1fr;
             }
         }
-
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <main id="mainView" class="page">
@@ -955,8 +748,8 @@
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
-            <button class="btn btn-gold" id="selectedPdfBtn">📄 선택 기록 PDF 저장</button>
-            <button class="btn btn-muted" id="allPdfBtn">🖨️ 전체 기록 PDF 저장</button>
+            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 JPG 저장</button>
+            <button class="btn btn-muted" id="allPdfBtn">🖼️ 전체 기록 JPG 저장</button>
             <button class="btn btn-danger-soft" id="clearHistoryBtn">전체 기록 삭제</button>
         </div>
 
@@ -965,10 +758,10 @@
 
     <main id="printView" class="hidden">
         <div class="print-toolbar">
-            <strong>🖨️ 게임 기록 PDF 미리보기</strong>
+            <strong>🖼️ 게임 기록 JPG 저장 미리보기</strong>
             <div class="toolbar-actions">
                 <button class="btn btn-muted" id="printHistoryBtn">← 이전 기록</button>
-                <button class="btn btn-gold" id="printNowBtn">PDF 저장 / 인쇄</button>
+                <button class="btn btn-gold" id="printNowBtn">JPG 저장</button>
             </div>
         </div>
         <div class="print-pages" id="printPages"></div>
@@ -1003,6 +796,11 @@
             blueT:  { label: '블루 T', colorClass: 'team-blue', shortColor: 'blue' },
             greenT: { label: '그린 T', colorClass: 'team-green', shortColor: 'green' }
         };
+
+        const scoreGroups = [
+            { key: 'J', title: 'Journey (J) 팀', teams: ['redJ', 'blueJ', 'greenJ'] },
+            { key: 'T', title: 'Trek (T) 팀', teams: ['redT', 'blueT', 'greenT'] }
+        ];
 
         let selectedHistoryIds = new Set();
 
@@ -1418,15 +1216,22 @@
             alert('현재 기록을 저장하고 새 게임을 시작했습니다.');
         }
 
-        function buildRankStrip(record) {
-            const rankMap = getRankMap(record);
+        function buildGroupRankStrip(record, groupKey) {
+            const totals = calculateTotals(record.teamData || []);
+            const placements = getGroupPlacements(totals, groupKey);
+            const group = scoreGroups.find(item => item.key === groupKey);
+            const rankMap = {};
+
+            group.teams.forEach(team => rankMap[team] = '');
+            placements.winners.forEach(team => rankMap[team] = '🥇');
+            placements.runners.forEach(team => rankMap[team] = '🥈');
 
             return `
-                <div class="rank-strip">
-                    <div class="rank-strip-spacer"></div>
-                    ${teamNames.map(team => `
-                        <div class="rank-strip-cell">
-                            <span class="rank-icon ${rankMap[team] ? '' : 'empty'}">
+                <div class="group-rank-strip">
+                    <div class="group-rank-strip-spacer"></div>
+                    ${group.teams.map(team => `
+                        <div class="group-rank-strip-cell">
+                            <span class="group-rank-icon ${rankMap[team] ? '' : 'empty'}">
                                 ${rankMap[team] || '•'}
                             </span>
                         </div>
@@ -1435,13 +1240,13 @@
             `;
         }
 
-        function buildScoreReport(record) {
+        function buildGroupScoreReport(record, group) {
             const totals = calculateTotals(record.teamData || []);
 
             const rows = (record.teamData || []).map(item => `
                 <tr>
                     <td>${escapeHtml(item.name)}</td>
-                    ${teamNames.map(team => `
+                    ${group.teams.map(team => `
                         <td class="${teamMeta[team].colorClass}">
                             ${Math.max(0, Number(item.scores?.[team] || 0))}
                         </td>
@@ -1449,7 +1254,7 @@
                 </tr>
             `).join('');
 
-            const finalCells = teamNames.map(team => `
+            const finalCells = group.teams.map(team => `
                 <td class="${teamMeta[team].colorClass} bg-warning bg-opacity-10">
                     <span class="final-score-chip d-inline-flex align-items-center justify-content-center
                                  fw-bolder rounded-3 border shadow-sm px-3 py-2">
@@ -1459,34 +1264,45 @@
             `).join('');
 
             return `
-                <div class="score-report-wrap">
-                    ${buildRankStrip(record)}
-                    <table class="history-score-table">
-                        <thead>
-                            <tr>
-                                <th>항목명</th>
-                                ${teamNames.map(team => `
-                                    <th>
-                                        <span class="team-name ${teamMeta[team].colorClass}">
-                                            ${teamMeta[team].label}
+                <div class="record-group-card">
+                    <div class="record-group-title">🏷️ ${group.title}</div>
+                    <div class="group-report-wrap">
+                        ${buildGroupRankStrip(record, group.key)}
+                        <table class="group-score-table">
+                            <thead>
+                                <tr>
+                                    <th>항목명</th>
+                                    ${group.teams.map(team => `
+                                        <th>
+                                            <span class="team-name ${teamMeta[team].colorClass}">
+                                                ${teamMeta[team].label}
+                                            </span>
+                                        </th>
+                                    `).join('')}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                                <tr class="final-score-row align-middle border-top border-bottom border-warning border-4">
+                                    <td class="bg-warning bg-opacity-10">
+                                        <span class="final-score-label badge text-bg-warning text-dark
+                                                     fw-bolder rounded-pill shadow-sm px-3 py-2">
+                                            ★ 최종점수 ★
                                         </span>
-                                    </th>
-                                `).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows}
-                            <tr class="final-score-row align-middle border-top border-bottom border-warning border-4">
-                                <td class="bg-warning bg-opacity-10">
-                                    <span class="final-score-label badge text-bg-warning text-dark
-                                                 fw-bolder rounded-pill shadow-sm px-3 py-2">
-                                        ★ 최종점수 ★
-                                    </span>
-                                </td>
-                                ${finalCells}
-                            </tr>
-                        </tbody>
-                    </table>
+                                    </td>
+                                    ${finalCells}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function buildSeparatedScoreReport(record) {
+            return `
+                <div class="record-group-grid">
+                    ${scoreGroups.map(group => buildGroupScoreReport(record, group)).join('')}
                 </div>
             `;
         }
@@ -1522,7 +1338,7 @@
                     <div class="history-card-body">
                         <div class="section-label">📋 항목별 상세 점수</div>
                         <div class="table-responsive">
-                            ${buildScoreReport(record)}
+                            ${buildSeparatedScoreReport(record)}
                         </div>
                     </div>
                 </section>
@@ -1592,15 +1408,62 @@
 
         function openPrintTab(ids) {
             if (!ids.length) {
-                alert('PDF로 저장할 기록을 하나 이상 선택해주세요.');
+                alert('JPG로 저장할 기록을 하나 이상 선택해주세요.');
                 return;
             }
 
             const encodedIds = ids.map(id => encodeURIComponent(id)).join(',');
-            window.location.hash = `print=${encodedIds}&autoprint=1`;
+            window.location.hash = `save=${encodedIds}&autodownload=1`;
         }
 
-        function renderPrint(ids, autoPrint) {
+        function getDateStampYYMMDD(value) {
+            const date = value ? new Date(value) : new Date();
+            if (Number.isNaN(date.getTime())) return getTodayYYMMDD();
+
+            const yy = String(date.getFullYear()).slice(-2);
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yy}${mm}${dd}`;
+        }
+
+        async function downloadRecordAsJpg(recordElement, fileName) {
+            if (typeof html2canvas !== 'function') {
+                alert('JPG 저장 라이브러리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.');
+                return;
+            }
+
+            const canvas = await html2canvas(recordElement, {
+                backgroundColor: '#121212',
+                scale: 2,
+                useCORS: true
+            });
+
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        async function downloadVisibleRecordsAsJpg() {
+            const records = [...document.querySelectorAll('#printPages .print-record')];
+
+            if (!records.length) {
+                alert('저장할 기록이 없습니다.');
+                return;
+            }
+
+            for (let i = 0; i < records.length; i += 1) {
+                const recordElement = records[i];
+                const stamp = recordElement.dataset.savedDate || getTodayYYMMDD();
+                const fileName = `게임기록_${stamp}_${String(i + 1).padStart(2, '0')}.jpg`;
+                await downloadRecordAsJpg(recordElement, fileName);
+                await new Promise(resolve => setTimeout(resolve, 250));
+            }
+        }
+
+        function renderPrint(ids, autoDownload) {
             const history = getHistory();
             const order = new Map(ids.map((id, index) => [id, index]));
             const records = history
@@ -1612,7 +1475,7 @@
             if (!records.length) {
                 pages.innerHTML = `
                     <div class="print-empty">
-                        PDF로 표시할 기록을 찾을 수 없습니다.<br>
+                        JPG로 저장할 기록을 찾을 수 없습니다.<br>
                         이전 기록 화면에서 다시 선택해주세요.
                     </div>
                 `;
@@ -1620,19 +1483,19 @@
             }
 
             pages.innerHTML = records.map(record => `
-                <section class="print-record">
-                    <div class="print-date">📌일시: ${escapeHtml(formatDateOnly(record.savedAt))}</div>
-                    <div class="section-label">📋 항목별 상세 점수</div>
-                    <div class="table-responsive">
-                        ${buildScoreReport(record)}
-                    </div>
+                <section class="print-record" data-saved-date="${escapeHtml(getDateStampYYMMDD(record.savedAt))}">
+                    <div class="print-date">📌날짜: ${escapeHtml(formatDateOnly(record.savedAt))}</div>
+                    <div class="section-label">📋 Journey / Trek 팀별 상세 점수</div>
+                    ${buildSeparatedScoreReport(record)}
                 </section>
             `).join('');
 
-            if (autoPrint) {
-                const cleanHash = `#print=${ids.map(id => encodeURIComponent(id)).join(',')}`;
+            if (autoDownload) {
+                const cleanHash = `#save=${ids.map(id => encodeURIComponent(id)).join(',')}`;
                 window.history.replaceState(null, '', `${baseUrl()}${cleanHash}`);
-                setTimeout(() => window.print(), 250);
+                setTimeout(() => {
+                    downloadVisibleRecordsAsJpg();
+                }, 250);
             }
         }
 
@@ -1643,8 +1506,8 @@
                 return { mode: 'history' };
             }
 
-            if (raw.startsWith('print=')) {
-                const query = new URLSearchParams(raw.replace(/^print=/, 'ids='));
+            if (raw.startsWith('save=')) {
+                const query = new URLSearchParams(raw.replace(/^save=/, 'ids='));
                 const ids = (query.get('ids') || '')
                     .split(',')
                     .filter(Boolean)
@@ -1653,7 +1516,7 @@
                 return {
                     mode: 'print',
                     ids,
-                    autoPrint: query.get('autoprint') === '1'
+                    autoPrint: query.get('autodownload') === '1'
                 };
             }
 
@@ -1677,7 +1540,7 @@
                 document.title = '이전 게임 전체 기록';
                 renderHistory();
             } else {
-                document.title = `게임기록_${getTodayYYMMDD()}`;
+                document.title = `게임기록_${getTodayYYMMDD()}_JPG`;
                 renderPrint(route.ids, route.autoPrint);
             }
         }
@@ -1792,7 +1655,7 @@
 
             document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
 
-            document.getElementById('printNowBtn').addEventListener('click', () => window.print());
+            document.getElementById('printNowBtn').addEventListener('click', () => { downloadVisibleRecordsAsJpg(); });
             document.getElementById('printHistoryBtn').addEventListener('click', () => {
                 window.location.hash = 'history';
             });
