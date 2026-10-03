@@ -159,6 +159,44 @@
 
         #scoreTable { min-width: 900px; }
 
+        .main-score-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .main-score-card {
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .main-score-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(241, 196, 15, 0.15);
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .main-score-table {
+            min-width: 100%;
+            table-layout: fixed;
+        }
+
+        .main-score-table th:first-child,
+        .main-score-table td:first-child {
+            width: 22%;
+            text-align: left;
+        }
+
         th, td {
             border: 1px solid var(--border);
             padding: 12px 6px;
@@ -422,9 +460,16 @@
         }
 
         .final-score-label {
-            font-size: 1.15rem !important;
-            letter-spacing: .4px;
+            font-weight: 800 !important;
+            font-size: inherit !important;
+            letter-spacing: normal !important;
             white-space: nowrap;
+            background: transparent !important;
+            color: inherit !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
         }
 
         .final-score-chip {
@@ -601,9 +646,16 @@
         }
 
         .print-record .final-score-label {
-            font-size: 1rem !important;
-            letter-spacing: .2px;
+            font-weight: 800 !important;
+            font-size: inherit !important;
+            letter-spacing: normal !important;
             white-space: nowrap;
+            background: transparent !important;
+            color: inherit !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
         }
 
         .print-record .final-score-chip {
@@ -659,7 +711,8 @@
                 flex-basis: 100%;
             }
 
-            .record-group-grid {
+            .record-group-grid,
+            .main-score-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -681,41 +734,68 @@
             <button class="btn" id="addCategoryBtn">팀 항목 추가</button>
         </div>
         
-        <div class="table-responsive">
-            <table id="scoreTable">
-                <thead>
-                    <tr>
-                        <th style="width:16%">항목명</th>
-                        <th class="team-red" style="width:14%">레드 J</th>
-                        <th class="team-blue" style="width:14%">블루 J</th>
-                        <th class="team-green" style="width:14%">그린 J</th>
-                        <th class="team-red" style="width:14%">레드 T</th>
-                        <th class="team-blue" style="width:14%">블루 T</th>
-                        <th class="team-green" style="width:14%">그린 T</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-                <tfoot>
-                    <tr class="total-row">
-                        <td>총점</td>
-                        <td id="redJTotal" class="team-red">0</td>
-                        <td id="blueJTotal" class="team-blue">0</td>
-                        <td id="greenJTotal" class="team-green">0</td>
-                        <td id="redTTotal" class="team-red">0</td>
-                        <td id="blueTTotal" class="team-blue">0</td>
-                        <td id="greenTTotal" class="team-green">0</td>
-                    </tr>
-                    <tr class="team-reset-row">
-                        <td>팀 초기화</td>
-                        <td><button class="col-reset-btn" data-team-reset="redJ">0점 초기화</button></td>
-                        <td><button class="col-reset-btn" data-team-reset="blueJ">0점 초기화</button></td>
-                        <td><button class="col-reset-btn" data-team-reset="greenJ">0점 초기화</button></td>
-                        <td><button class="col-reset-btn" data-team-reset="redT">0점 초기화</button></td>
-                        <td><button class="col-reset-btn" data-team-reset="blueT">0점 초기화</button></td>
-                        <td><button class="col-reset-btn" data-team-reset="greenT">0점 초기화</button></td>
-                    </tr>
-                </tfoot>
-            </table>
+        <div class="main-score-grid">
+            <div class="main-score-card">
+                <div class="main-score-title">🏷️ Journey (J) 팀 점수표</div>
+                <div class="table-responsive">
+                    <table id="scoreTableJ" class="main-score-table">
+                        <thead>
+                            <tr>
+                                <th style="width:22%">항목명</th>
+                                <th class="team-red">레드 J</th>
+                                <th class="team-blue">블루 J</th>
+                                <th class="team-green">그린 J</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyJ"></tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>총점</td>
+                                <td id="redJTotal" class="team-red">0</td>
+                                <td id="blueJTotal" class="team-blue">0</td>
+                                <td id="greenJTotal" class="team-green">0</td>
+                            </tr>
+                            <tr class="team-reset-row">
+                                <td>팀 초기화</td>
+                                <td><button class="col-reset-btn" data-team-reset="redJ">0점 초기화</button></td>
+                                <td><button class="col-reset-btn" data-team-reset="blueJ">0점 초기화</button></td>
+                                <td><button class="col-reset-btn" data-team-reset="greenJ">0점 초기화</button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="main-score-card">
+                <div class="main-score-title">🏷️ Trek (T) 팀 점수표</div>
+                <div class="table-responsive">
+                    <table id="scoreTableT" class="main-score-table">
+                        <thead>
+                            <tr>
+                                <th style="width:22%">항목명</th>
+                                <th class="team-red">레드 T</th>
+                                <th class="team-blue">블루 T</th>
+                                <th class="team-green">그린 T</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBodyT"></tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td>총점</td>
+                                <td id="redTTotal" class="team-red">0</td>
+                                <td id="blueTTotal" class="team-blue">0</td>
+                                <td id="greenTTotal" class="team-green">0</td>
+                            </tr>
+                            <tr class="team-reset-row">
+                                <td>팀 초기화</td>
+                                <td><button class="col-reset-btn" data-team-reset="redT">0점 초기화</button></td>
+                                <td><button class="col-reset-btn" data-team-reset="blueT">0점 초기화</button></td>
+                                <td><button class="col-reset-btn" data-team-reset="greenT">0점 초기화</button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div class="header-bottom">
@@ -748,8 +828,8 @@
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
-            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 JPG 저장</button>
-            <button class="btn btn-muted" id="allPdfBtn">🖼️ 전체 기록 JPG 저장</button>
+            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 개별 JPG 저장</button>
+            <button class="btn btn-muted" id="allPdfBtn">🖼️ 전체 기록 한 장 JPG 저장</button>
             <button class="btn btn-danger-soft" id="clearHistoryBtn">전체 기록 삭제</button>
         </div>
 
@@ -964,63 +1044,73 @@
             return result;
         }
 
+        function createMainScoreRow(item, rowIndex, teams) {
+            const tr = document.createElement('tr');
+            tr.dataset.rowIndex = String(rowIndex);
+
+            const nameTd = document.createElement('td');
+            const wrap = document.createElement('div');
+            wrap.className = 'category-cell';
+
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'category-name';
+            nameSpan.textContent = item.name;
+            wrap.appendChild(nameSpan);
+
+            if (!item.isDefault) {
+                const del = document.createElement('button');
+                del.className = 'delete-btn';
+                del.type = 'button';
+                del.textContent = '삭제';
+                del.addEventListener('click', () => deleteCategory(rowIndex));
+                wrap.appendChild(del);
+            }
+
+            nameTd.appendChild(wrap);
+            tr.appendChild(nameTd);
+
+            teams.forEach(team => {
+                const td = document.createElement('td');
+                const control = document.createElement('div');
+                control.className = 'score-control';
+
+                const down = document.createElement('button');
+                down.className = 'arrow-btn';
+                down.type = 'button';
+                down.textContent = '▼';
+                down.addEventListener('click', () => changeScore(rowIndex, team, -100));
+
+                const value = document.createElement('span');
+                value.className = 'score-val';
+                value.textContent = String(item.scores[team]);
+
+                const up = document.createElement('button');
+                up.className = 'arrow-btn';
+                up.type = 'button';
+                up.textContent = '▲';
+                up.addEventListener('click', () => changeScore(rowIndex, team, 100));
+
+                control.append(down, value, up);
+                td.appendChild(control);
+                tr.appendChild(td);
+            });
+
+            return tr;
+        }
+
         function renderMain() {
             const data = getCurrentData();
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
+            const tbodyJ = document.getElementById('tableBodyJ');
+            const tbodyT = document.getElementById('tableBodyT');
+            tbodyJ.innerHTML = '';
+            tbodyT.innerHTML = '';
+
+            const jTeams = ['redJ', 'blueJ', 'greenJ'];
+            const tTeams = ['redT', 'blueT', 'greenT'];
 
             data.forEach((item, rowIndex) => {
-                const tr = document.createElement('tr');
-                tr.dataset.rowIndex = String(rowIndex);
-
-                const nameTd = document.createElement('td');
-                const wrap = document.createElement('div');
-                wrap.className = 'category-cell';
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'category-name';
-                nameSpan.textContent = item.name;
-                wrap.appendChild(nameSpan);
-
-                if (!item.isDefault) {
-                    const del = document.createElement('button');
-                    del.className = 'delete-btn';
-                    del.type = 'button';
-                    del.textContent = '삭제';
-                    del.addEventListener('click', () => deleteCategory(rowIndex));
-                    wrap.appendChild(del);
-                }
-
-                nameTd.appendChild(wrap);
-                tr.appendChild(nameTd);
-
-                teamNames.forEach(team => {
-                    const td = document.createElement('td');
-                    const control = document.createElement('div');
-                    control.className = 'score-control';
-
-                    const down = document.createElement('button');
-                    down.className = 'arrow-btn';
-                    down.type = 'button';
-                    down.textContent = '▼';
-                    down.addEventListener('click', () => changeScore(rowIndex, team, -100));
-
-                    const value = document.createElement('span');
-                    value.className = 'score-val';
-                    value.textContent = String(item.scores[team]);
-
-                    const up = document.createElement('button');
-                    up.className = 'arrow-btn';
-                    up.type = 'button';
-                    up.textContent = '▲';
-                    up.addEventListener('click', () => changeScore(rowIndex, team, 100));
-
-                    control.append(down, value, up);
-                    td.appendChild(control);
-                    tr.appendChild(td);
-                });
-
-                tbody.appendChild(tr);
+                tbodyJ.appendChild(createMainScoreRow(item, rowIndex, jTeams));
+                tbodyT.appendChild(createMainScoreRow(item, rowIndex, tTeams));
             });
 
             renderTotals(data);
@@ -1030,7 +1120,8 @@
         function renderTotals(data = getCurrentData()) {
             const totals = calculateTotals(data);
             teamNames.forEach(team => {
-                document.getElementById(`${team}Total`).textContent = String(totals[team]);
+                const target = document.getElementById(`${team}Total`);
+                if (target) target.textContent = String(totals[team]);
             });
         }
 
@@ -1285,10 +1376,7 @@
                                 ${rows}
                                 <tr class="final-score-row align-middle border-top border-bottom border-warning border-4">
                                     <td class="bg-warning bg-opacity-10">
-                                        <span class="final-score-label badge text-bg-warning text-dark
-                                                     fw-bolder rounded-pill shadow-sm px-3 py-2">
-                                            ★ 최종점수 ★
-                                        </span>
+                                        <strong class="final-score-label">최종점수</strong>
                                     </td>
                                     ${finalCells}
                                 </tr>
@@ -1406,14 +1494,14 @@
             window.location.hash = 'history';
         }
 
-        function openPrintTab(ids) {
+        function openPrintTab(ids, saveMode = 'single') {
             if (!ids.length) {
                 alert('JPG로 저장할 기록을 하나 이상 선택해주세요.');
                 return;
             }
 
             const encodedIds = ids.map(id => encodeURIComponent(id)).join(',');
-            window.location.hash = `save=${encodedIds}&autodownload=1`;
+            window.location.hash = `save=${encodedIds}&autodownload=1&mode=${saveMode}`;
         }
 
         function getDateStampYYMMDD(value) {
@@ -1463,7 +1551,19 @@
             }
         }
 
-        function renderPrint(ids, autoDownload) {
+        async function downloadCombinedRecordsAsJpg() {
+            const pages = document.getElementById('printPages');
+
+            if (!pages || !pages.children.length) {
+                alert('저장할 기록이 없습니다.');
+                return;
+            }
+
+            const fileName = `게임기록_전체_${getTodayYYMMDD()}.jpg`;
+            await downloadRecordAsJpg(pages, fileName);
+        }
+
+        function renderPrint(ids, autoDownload, saveMode = 'single') {
             const history = getHistory();
             const order = new Map(ids.map((id, index) => [id, index]));
             const records = history
@@ -1471,6 +1571,12 @@
                 .sort((a, b) => order.get(a.id) - order.get(b.id));
 
             const pages = document.getElementById('printPages');
+            pages.dataset.saveMode = saveMode;
+
+            const saveButton = document.getElementById('printNowBtn');
+            if (saveButton) {
+                saveButton.textContent = saveMode === 'combined' ? 'JPG 한 장 저장' : 'JPG 개별 저장';
+            }
 
             if (!records.length) {
                 pages.innerHTML = `
@@ -1491,10 +1597,14 @@
             `).join('');
 
             if (autoDownload) {
-                const cleanHash = `#save=${ids.map(id => encodeURIComponent(id)).join(',')}`;
+                const cleanHash = `#save=${ids.map(id => encodeURIComponent(id)).join(',')}&mode=${saveMode}`;
                 window.history.replaceState(null, '', `${baseUrl()}${cleanHash}`);
                 setTimeout(() => {
-                    downloadVisibleRecordsAsJpg();
+                    if (saveMode === 'combined') {
+                        downloadCombinedRecordsAsJpg();
+                    } else {
+                        downloadVisibleRecordsAsJpg();
+                    }
                 }, 250);
             }
         }
@@ -1516,7 +1626,8 @@
                 return {
                     mode: 'print',
                     ids,
-                    autoPrint: query.get('autodownload') === '1'
+                    autoPrint: query.get('autodownload') === '1',
+                    saveMode: query.get('mode') || 'single'
                 };
             }
 
@@ -1541,7 +1652,7 @@
                 renderHistory();
             } else {
                 document.title = `게임기록_${getTodayYYMMDD()}_JPG`;
-                renderPrint(route.ids, route.autoPrint);
+                renderPrint(route.ids, route.autoPrint, route.saveMode || 'single');
             }
         }
         
@@ -1646,16 +1757,23 @@
             document.getElementById('toggleSelectAllBtn').addEventListener('click', toggleSelectAllHistory);
 
             document.getElementById('selectedPdfBtn').addEventListener('click', () => {
-                openPrintTab([...selectedHistoryIds]);
+                openPrintTab([...selectedHistoryIds], 'single');
             });
 
             document.getElementById('allPdfBtn').addEventListener('click', () => {
-                openPrintTab(getHistory().map(record => record.id));
+                openPrintTab(getHistory().map(record => record.id), 'combined');
             });
 
             document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
 
-            document.getElementById('printNowBtn').addEventListener('click', () => { downloadVisibleRecordsAsJpg(); });
+            document.getElementById('printNowBtn').addEventListener('click', () => {
+                const mode = document.getElementById('printPages').dataset.saveMode || 'single';
+                if (mode === 'combined') {
+                    downloadCombinedRecordsAsJpg();
+                } else {
+                    downloadVisibleRecordsAsJpg();
+                }
+            });
             document.getElementById('printHistoryBtn').addEventListener('click', () => {
                 window.location.hash = 'history';
             });
