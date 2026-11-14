@@ -1110,6 +1110,204 @@
             border-right: 3px solid #6f94bd !important;
         }
 
+
+        /* =========================================================
+           16:9 Scoreboard Layout
+           - 메인 점수판 / 이전기록 J,T 카드 자체를 16:9 비율로 구성
+           - 저장 시 16:9 이미지가 화면을 꽉 채우도록 카드 비율을 선행 수정
+           ========================================================= */
+
+        .page {
+            max-width: 1460px;
+        }
+
+        /* J/T 점수판은 세로로 1장씩 크게 배치해서 16:9 카드 유지 */
+        .main-score-grid,
+        .record-group-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            width: 100%;
+        }
+
+        .main-score-card,
+        .record-group-card {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            aspect-ratio: 16 / 9;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            padding: 18px 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .main-score-logo-wrap,
+        .record-group-logo-wrap {
+            min-height: 72px;
+            margin-bottom: 10px;
+            padding: 10px 14px;
+        }
+
+        .main-score-logo {
+            max-width: 60%;
+            max-height: 50px;
+        }
+
+        .main-score-logo.trek-logo,
+        .record-group-logo {
+            max-height: 48px;
+        }
+
+        .main-score-card > .table-responsive,
+        .group-report-wrap {
+            min-height: 0;
+            height: 100%;
+            display: grid;
+            grid-template-rows: minmax(0, 1fr);
+        }
+
+        .group-report-wrap {
+            grid-template-rows: auto minmax(0, 1fr);
+        }
+
+        .main-score-table,
+        .group-score-table {
+            width: 100%;
+            min-width: 0 !important;
+            height: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        /* 첫 열 비율 살짝 줄여 점수칸 가로 확보 */
+        .main-score-table th:first-child,
+        .main-score-table td:first-child {
+            width: 14%;
+        }
+
+        .group-score-table th:first-child,
+        .group-score-table td:first-child {
+            width: 18%;
+        }
+
+        /* 16:9 카드 내부에서 더 안정적으로 보이게 패딩 축소 */
+        th, td,
+        .main-score-table th,
+        .main-score-table td,
+        .group-score-table th,
+        .group-score-table td {
+            padding: 8px 6px;
+            font-size: 15px;
+            line-height: 1.1;
+            vertical-align: middle;
+        }
+
+        .main-score-table th,
+        .group-score-table th {
+            font-size: 15px;
+        }
+
+        .group-score-table .team-name {
+            font-size: 15px;
+        }
+
+        .score-control {
+            gap: 5px;
+        }
+
+        .score-val {
+            min-width: 28px;
+            font-size: 15px;
+        }
+
+        .arrow-btn {
+            min-width: 30px;
+            padding: 5px 6px;
+            font-size: 11px;
+        }
+
+        .delete-btn,
+        .col-reset-btn {
+            padding: 5px 8px;
+            font-size: 12px;
+        }
+
+        .category-cell {
+            gap: 6px;
+        }
+
+        .category-name {
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        .team-reset-row td,
+        .team-reset-row button {
+            font-size: 12px;
+        }
+
+        .total-row {
+            font-size: 17px;
+        }
+
+        .main-score-table tfoot .total-row td,
+        .group-score-table .final-score-row td {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .group-rank-strip {
+            grid-template-columns: 18% repeat(3, 1fr);
+            margin-bottom: 6px;
+        }
+
+        .group-rank-strip-spacer,
+        .group-rank-strip-cell {
+            min-height: 34px;
+        }
+
+        .group-rank-icon {
+            font-size: 28px;
+        }
+
+        /* 선택 저장용 JPG 카드도 같은 16:9를 유지하도록 인쇄 미리보기 폭 보정 */
+        #printView {
+            max-width: 1360px;
+        }
+
+        .print-record {
+            padding: 20px;
+        }
+
+        .print-record .section-label {
+            margin-bottom: 12px;
+        }
+
+        .print-record .record-group-card {
+            max-width: none;
+        }
+
+        /* 저장용 최종점수 텍스트는 크되 카드 안에서 넘치지 않도록 약간 정리 */
+        .final-score-label {
+            font-size: 30px !important;
+        }
+
+        .print-record .final-score-label {
+            font-size: 30px !important;
+        }
+
+        .final-score-chip {
+            min-width: 88px !important;
+            font-size: 1.5rem !important;
+        }
+
+        .print-record .final-score-chip {
+            min-width: 88px !important;
+            font-size: 1.5rem !important;
+        }
+
         @media (max-width: 900px) {
             body { padding: 10px; }
 
@@ -1168,7 +1366,8 @@
             <h2>🎯 팀별 점수 기록표</h2>
             <div class="header-actions">
                 <button class="btn btn-gold" id="openHistoryBtn">🗂️ 이전 게임 기록 보기</button>
-                <button class="btn btn-danger" id="newGameBtn">전체 초기화</button>
+                <button class="btn btn-muted" id="saveGameBtn">💾 기록 저장</button>
+                <button class="btn btn-danger" id="newGameBtn">♻️ 전체 초기화</button>
             </div>
         </div>
 
@@ -1275,7 +1474,7 @@
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
-            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 J/T 개별 JPG 저장</button>
+            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 J/T 개별 16:9 화면형 JPG 저장</button>
             <button class="btn btn-muted" id="allPdfBtn">🖼️ 전체 기록 한 장 JPG 저장</button>
             <button class="btn btn-danger-soft" id="clearHistoryBtn">전체 기록 삭제</button>
         </div>
@@ -1747,16 +1946,28 @@
             renderMain();
         }
 
-        function startNewGame() {
+        function saveGameOnly() {
             const ok = confirm(
-                "현재 기록을 '이전 게임 기록'에 저장한 뒤 새 게임을 시작할까요?\n\n"
+                "현재 점수 기록을 '이전 게임 기록'에 저장할까요?\n\n" +
+                "저장 후에도 현재 점수판은 그대로 유지됩니다."
             );
 
             if (!ok) return;
 
             saveCurrentGameToHistory();
+            alert('현재 점수 기록을 저장했습니다.');
+        }
+
+        function startNewGame() {
+            const ok = confirm(
+                "현재 점수판을 모두 초기화할까요?\n\n" +
+                "이 버튼은 기록을 저장하지 않고 점수만 초기화합니다."
+            );
+
+            if (!ok) return;
+
             resetToNewGame();
-            alert('현재 기록을 저장하고 새 게임을 시작했습니다.');
+            alert('점수판을 초기화했습니다.');
         }
 
         function buildGroupRankStrip(record, groupKey) {
@@ -1975,13 +2186,62 @@
             }
 
             const canvas = await html2canvas(recordElement, {
-                backgroundColor: '#121212',
+                backgroundColor: '#f4f7fb',
                 scale: 2,
                 useCORS: true
             });
 
             const link = document.createElement('a');
             link.href = canvas.toDataURL('image/jpeg', 0.95);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        async function downloadRecordAs16x9Jpg(recordElement, fileName) {
+            if (typeof html2canvas !== 'function') {
+                alert('JPG 저장 라이브러리를 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.');
+                return;
+            }
+
+            const sourceCanvas = await html2canvas(recordElement, {
+                backgroundColor: '#ffffff',
+                scale: 2,
+                useCORS: true
+            });
+
+            // 카드 자체를 16:9 비율로 맞춘 상태이므로 저장도 화면 꽉 차게 구성
+            const outputWidth = 1920;
+            const outputHeight = 1080;
+
+            const outputCanvas = document.createElement('canvas');
+            outputCanvas.width = outputWidth;
+            outputCanvas.height = outputHeight;
+
+            const ctx = outputCanvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, outputWidth, outputHeight);
+
+            const scale = Math.min(
+                outputWidth / sourceCanvas.width,
+                outputHeight / sourceCanvas.height
+            );
+
+            const drawWidth = sourceCanvas.width * scale;
+            const drawHeight = sourceCanvas.height * scale;
+
+            const x = (outputWidth - drawWidth) / 2;
+            const y = (outputHeight - drawHeight) / 2;
+
+            ctx.drawImage(
+                sourceCanvas,
+                0, 0, sourceCanvas.width, sourceCanvas.height,
+                x, y, drawWidth, drawHeight
+            );
+
+            const link = document.createElement('a');
+            link.href = outputCanvas.toDataURL('image/jpeg', 0.97);
             link.download = fileName;
             document.body.appendChild(link);
             link.click();
@@ -2003,7 +2263,7 @@
 
                 if (!groupCards.length) {
                     const fallbackName = `게임기록_${stamp}_${String(i + 1).padStart(2, '0')}.jpg`;
-                    await downloadRecordAsJpg(recordElement, fallbackName);
+                    await downloadRecordAs16x9Jpg(recordElement, fallbackName);
                     await new Promise(resolve => setTimeout(resolve, 250));
                     continue;
                 }
@@ -2011,7 +2271,7 @@
                 for (const groupCard of groupCards) {
                     const groupKey = groupCard.dataset.groupKey || 'GROUP';
                     const fileName = `게임기록_${stamp}_${String(i + 1).padStart(2, '0')}_${groupKey}.jpg`;
-                    await downloadRecordAsJpg(groupCard, fileName);
+                    await downloadRecordAs16x9Jpg(groupCard, fileName);
                     await new Promise(resolve => setTimeout(resolve, 250));
                 }
             }
@@ -2204,6 +2464,7 @@
             });
 
             document.getElementById('settleBtn').addEventListener('click', settleInteraction);
+            document.getElementById('saveGameBtn').addEventListener('click', saveGameOnly);
             document.getElementById('newGameBtn').addEventListener('click', startNewGame);
             document.getElementById('openHistoryBtn').addEventListener('click', openHistoryTab);
 
