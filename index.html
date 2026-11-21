@@ -1620,65 +1620,107 @@
             display: none !important;
         }
 
-        /* 우승/준우승 배지 */
-        .rank-badge {
+        /* 다이나믹 트로피 아이콘 */
+        .group-rank-strip {
+            min-height: 72px !important;
+            margin-bottom: 10px !important;
+        }
+
+        .group-rank-strip-spacer,
+        .group-rank-strip-cell {
+            min-height: 72px !important;
+        }
+
+        .rank-trophy {
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
-            min-width: 104px;
-            min-height: 42px;
-            padding: 7px 13px;
-            border-radius: 999px;
-            font-size: 17px;
-            line-height: 1;
-            font-weight: 900;
-            letter-spacing: -0.02em;
-            white-space: nowrap;
-            box-shadow: 0 4px 10px rgba(31, 41, 55, .10);
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            isolation: isolate;
+            animation: trophyFloat 2.8s ease-in-out infinite;
+            transform-origin: center;
         }
 
-        .rank-badge-icon {
+        .rank-trophy-icon {
+            position: relative;
+            z-index: 2;
             display: inline-block;
-            font-size: 22px;
+            font-size: 48px;
             line-height: 1;
+            filter: drop-shadow(0 6px 10px rgba(31, 41, 55, .18));
         }
 
-        .rank-badge-text {
-            display: inline-block;
-            line-height: 1;
+        .rank-trophy-glow {
+            position: absolute;
+            inset: 8px;
+            z-index: 1;
+            border-radius: 50%;
+            animation: trophyPulse 2.2s ease-in-out infinite;
         }
 
-        .rank-winner {
-            color: #725400;
-            background:
-                linear-gradient(180deg, #fff8cf 0%, #ffe98a 100%);
-            border: 2px solid #e4b900;
+        .trophy-winner {
+            animation-delay: 0s;
+        }
+
+        .trophy-winner .rank-trophy-glow {
+            background: radial-gradient(circle, rgba(255, 222, 89, .50) 0%, rgba(255, 222, 89, .18) 52%, rgba(255, 222, 89, 0) 74%);
             box-shadow:
-                0 0 0 3px rgba(255, 193, 7, .10),
-                0 5px 12px rgba(164, 124, 0, .14);
+                0 0 0 2px rgba(230, 185, 0, .25),
+                0 0 22px rgba(255, 193, 7, .38),
+                0 0 40px rgba(255, 193, 7, .22);
         }
 
-        .rank-runner {
-            color: #495057;
-            background:
-                linear-gradient(180deg, #f8f9fa 0%, #e2e6ea 100%);
-            border: 2px solid #adb5bd;
+        .trophy-winner .rank-trophy-icon {
+            filter:
+                drop-shadow(0 3px 0 rgba(150, 111, 0, .18))
+                drop-shadow(0 8px 16px rgba(255, 193, 7, .28));
+        }
+
+        .trophy-runner {
+            animation-delay: .25s;
+        }
+
+        .trophy-runner .rank-trophy-glow {
+            background: radial-gradient(circle, rgba(222, 226, 230, .62) 0%, rgba(222, 226, 230, .20) 52%, rgba(222, 226, 230, 0) 74%);
             box-shadow:
-                0 0 0 3px rgba(108, 117, 125, .08),
-                0 5px 12px rgba(73, 80, 87, .10);
+                0 0 0 2px rgba(173, 181, 189, .30),
+                0 0 18px rgba(173, 181, 189, .24),
+                0 0 34px rgba(173, 181, 189, .18);
         }
 
-        /* 저장 이미지에서도 순위 배지가 더 선명하게 */
-        .print-record .rank-badge {
-            min-width: 112px;
-            min-height: 44px;
-            font-size: 18px;
-            padding: 8px 14px;
+        .trophy-runner .rank-trophy-icon {
+            filter:
+                grayscale(.18)
+                saturate(.70)
+                brightness(1.06)
+                drop-shadow(0 3px 0 rgba(108, 117, 125, .16))
+                drop-shadow(0 8px 14px rgba(108, 117, 125, .20));
         }
 
-        .print-record .rank-badge-icon {
-            font-size: 23px;
+        .print-record .rank-trophy {
+            width: 78px;
+            height: 78px;
+        }
+
+        .print-record .rank-trophy-icon {
+            font-size: 50px;
+        }
+
+        @keyframes trophyFloat {
+            0%   { transform: translateY(0) scale(1) rotate(0deg); }
+            25%  { transform: translateY(-2px) scale(1.03) rotate(-1.2deg); }
+            50%  { transform: translateY(-5px) scale(1.06) rotate(0deg); }
+            75%  { transform: translateY(-2px) scale(1.03) rotate(1.2deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); }
+        }
+
+        @keyframes trophyPulse {
+            0%   { transform: scale(.90); opacity: .72; }
+            50%  { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(.90); opacity: .72; }
         }
 
         @media (max-width: 900px) {
@@ -1778,16 +1820,19 @@
                 max-height: 56px !important;
             }
 
-            .rank-badge {
-                min-width: 86px;
-                min-height: 36px;
-                padding: 6px 10px;
-                font-size: 14px;
-                gap: 5px;
+            .rank-trophy {
+                width: 56px;
+                height: 56px;
             }
 
-            .rank-badge-icon {
-                font-size: 18px;
+            .rank-trophy-icon {
+                font-size: 36px;
+            }
+
+            .group-rank-strip,
+            .group-rank-strip-spacer,
+            .group-rank-strip-cell {
+                min-height: 54px !important;
             }
         }
     </style>
@@ -2422,9 +2467,9 @@
                         if (rank === 'winner') {
                             return `
                                 <div class="group-rank-strip-cell">
-                                    <span class="rank-badge rank-winner">
-                                        <span class="rank-badge-icon">🏆</span>
-                                        <span class="rank-badge-text">우승</span>
+                                    <span class="rank-trophy trophy-winner" title="우승">
+                                        <span class="rank-trophy-glow"></span>
+                                        <span class="rank-trophy-icon">🏆</span>
                                     </span>
                                 </div>
                             `;
@@ -2433,9 +2478,9 @@
                         if (rank === 'runner') {
                             return `
                                 <div class="group-rank-strip-cell">
-                                    <span class="rank-badge rank-runner">
-                                        <span class="rank-badge-icon">🥈</span>
-                                        <span class="rank-badge-text">준우승</span>
+                                    <span class="rank-trophy trophy-runner" title="준우승">
+                                        <span class="rank-trophy-glow"></span>
+                                        <span class="rank-trophy-icon">🏆</span>
                                     </span>
                                 </div>
                             `;
