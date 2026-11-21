@@ -1695,23 +1695,29 @@
         }
 
         .trophy-runner .rank-trophy-icon {
-            font-size: 58px;
+            font-size: 60px;
             filter:
+                grayscale(1)
+                saturate(0)
+                brightness(1.22)
+                contrast(.92)
                 drop-shadow(0 4px 0 rgba(73, 80, 87, .10))
-                drop-shadow(0 7px 9px rgba(73, 80, 87, .14));
+                drop-shadow(0 7px 10px rgba(73, 80, 87, .16));
         }
 
         .trophy-runner .rank-trophy-glow {
             background: radial-gradient(
                 circle,
                 #ffffff 0%,
-                #f2f4f6 56%,
-                #d8dde2 100%
+                #eef1f4 42%,
+                #cfd5db 72%,
+                #aeb6bf 100%
             );
-            border: 4px solid #9da5ad;
+            border: 4px solid #8f99a3;
             box-shadow:
+                inset 0 0 0 2px rgba(255,255,255,.65),
                 0 0 0 4px rgba(108, 117, 125, .10),
-                0 7px 16px rgba(73, 80, 87, .10);
+                0 7px 16px rgba(73, 80, 87, .12);
         }
 
         /* JPG 저장에서도 같은 크기로 또렷하게 유지 */
@@ -1848,7 +1854,7 @@
             }
 
             .trophy-runner .rank-trophy-icon {
-                font-size: 42px;
+                font-size: 43px;
             }
 
             .group-rank-strip,
@@ -2502,7 +2508,7 @@
                                 <div class="group-rank-strip-cell">
                                     <span class="rank-trophy trophy-runner" title="준우승">
                                         <span class="rank-trophy-glow"></span>
-                                        <span class="rank-trophy-icon">🥈</span>
+                                        <span class="rank-trophy-icon">🏆</span>
                                     </span>
                                 </div>
                             `;
