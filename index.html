@@ -1570,6 +1570,117 @@
             font-size: 20px;
         }
 
+
+        /* =========================================================
+           로고 확대 + 이전기록 순위 표시 강화
+           ========================================================= */
+
+        /* 메인 점수판 Journey / Trek 로고 */
+        .main-score-logo-wrap {
+            min-height: 112px !important;
+            padding: 12px 18px !important;
+            margin-bottom: 14px !important;
+        }
+
+        .main-score-logo {
+            max-width: 76% !important;
+            max-height: 82px !important;
+        }
+
+        .main-score-logo.trek-logo {
+            max-width: 72% !important;
+            max-height: 78px !important;
+        }
+
+        /* 이전기록 / JPG 저장 카드 로고 */
+        .record-group-logo-wrap {
+            min-height: 108px !important;
+            padding: 12px 18px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .record-group-logo {
+            max-width: 76% !important;
+            max-height: 78px !important;
+        }
+
+        /* 우승/준우승 영역을 충분히 확보 */
+        .group-rank-strip {
+            min-height: 58px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .group-rank-strip-spacer,
+        .group-rank-strip-cell {
+            min-height: 58px !important;
+        }
+
+        /* 기존 작은 메달 표시는 사용하지 않음 */
+        .group-rank-icon {
+            display: none !important;
+        }
+
+        /* 우승/준우승 배지 */
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-width: 104px;
+            min-height: 42px;
+            padding: 7px 13px;
+            border-radius: 999px;
+            font-size: 17px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            box-shadow: 0 4px 10px rgba(31, 41, 55, .10);
+        }
+
+        .rank-badge-icon {
+            display: inline-block;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .rank-badge-text {
+            display: inline-block;
+            line-height: 1;
+        }
+
+        .rank-winner {
+            color: #725400;
+            background:
+                linear-gradient(180deg, #fff8cf 0%, #ffe98a 100%);
+            border: 2px solid #e4b900;
+            box-shadow:
+                0 0 0 3px rgba(255, 193, 7, .10),
+                0 5px 12px rgba(164, 124, 0, .14);
+        }
+
+        .rank-runner {
+            color: #495057;
+            background:
+                linear-gradient(180deg, #f8f9fa 0%, #e2e6ea 100%);
+            border: 2px solid #adb5bd;
+            box-shadow:
+                0 0 0 3px rgba(108, 117, 125, .08),
+                0 5px 12px rgba(73, 80, 87, .10);
+        }
+
+        /* 저장 이미지에서도 순위 배지가 더 선명하게 */
+        .print-record .rank-badge {
+            min-width: 112px;
+            min-height: 44px;
+            font-size: 18px;
+            padding: 8px 14px;
+        }
+
+        .print-record .rank-badge-icon {
+            font-size: 23px;
+        }
+
         @media (max-width: 900px) {
             body { padding: 10px; }
 
@@ -1652,8 +1763,31 @@
             }
 
             .main-score-logo {
-                max-width: 72%;
-                max-height: 52px;
+                max-width: 72% !important;
+                max-height: 58px !important;
+            }
+
+            .main-score-logo-wrap,
+            .record-group-logo-wrap {
+                min-height: 78px !important;
+                padding: 8px 10px !important;
+            }
+
+            .record-group-logo {
+                max-width: 72% !important;
+                max-height: 56px !important;
+            }
+
+            .rank-badge {
+                min-width: 86px;
+                min-height: 36px;
+                padding: 6px 10px;
+                font-size: 14px;
+                gap: 5px;
+            }
+
+            .rank-badge-icon {
+                font-size: 18px;
             }
         }
     </style>
@@ -2276,19 +2410,39 @@
             const rankMap = {};
 
             group.teams.forEach(team => rankMap[team] = '');
-            placements.winners.forEach(team => rankMap[team] = '🥇');
-            placements.runners.forEach(team => rankMap[team] = '🥈');
+            placements.winners.forEach(team => rankMap[team] = 'winner');
+            placements.runners.forEach(team => rankMap[team] = 'runner');
 
             return `
                 <div class="group-rank-strip">
                     <div class="group-rank-strip-spacer"></div>
-                    ${group.teams.map(team => `
-                        <div class="group-rank-strip-cell">
-                            <span class="group-rank-icon ${rankMap[team] ? '' : 'empty'}">
-                                ${rankMap[team] || '•'}
-                            </span>
-                        </div>
-                    `).join('')}
+                    ${group.teams.map(team => {
+                        const rank = rankMap[team];
+
+                        if (rank === 'winner') {
+                            return `
+                                <div class="group-rank-strip-cell">
+                                    <span class="rank-badge rank-winner">
+                                        <span class="rank-badge-icon">🏆</span>
+                                        <span class="rank-badge-text">우승</span>
+                                    </span>
+                                </div>
+                            `;
+                        }
+
+                        if (rank === 'runner') {
+                            return `
+                                <div class="group-rank-strip-cell">
+                                    <span class="rank-badge rank-runner">
+                                        <span class="rank-badge-icon">🥈</span>
+                                        <span class="rank-badge-text">준우승</span>
+                                    </span>
+                                </div>
+                            `;
+                        }
+
+                        return `<div class="group-rank-strip-cell"></div>`;
+                    }).join('')}
                 </div>
             `;
         }
