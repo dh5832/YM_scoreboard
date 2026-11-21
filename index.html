@@ -1308,8 +1308,307 @@
             font-size: 1.5rem !important;
         }
 
+
+        /* =========================================================
+           16:9 가독성 확대
+           큰 화면 / JPG 저장 기준으로 글자 크기와 행 구분 강화
+           ========================================================= */
+
+        html,
+        body {
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Pretendard",
+                "Apple SD Gothic Neo",
+                "Noto Sans KR",
+                "Segoe UI",
+                sans-serif;
+            font-size: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .page {
+            max-width: 1560px;
+        }
+
+        .main-score-card,
+        .record-group-card {
+            max-width: 1440px;
+            padding: 22px 24px;
+            border-width: 1.5px;
+            box-shadow: 0 12px 30px rgba(31, 41, 55, .07);
+        }
+
+        .main-score-logo-wrap,
+        .record-group-logo-wrap {
+            min-height: 82px;
+            margin-bottom: 12px;
+            padding: 10px 16px;
+        }
+
+        .main-score-logo {
+            max-height: 58px;
+        }
+
+        .main-score-logo.trek-logo,
+        .record-group-logo {
+            max-height: 56px;
+        }
+
+        /* 표 선을 조금 더 선명하게 */
+        .main-score-table,
+        .group-score-table {
+            border: 1.5px solid #c7d2df;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .main-score-table th,
+        .main-score-table td,
+        .group-score-table th,
+        .group-score-table td {
+            border-color: #cbd5e1 !important;
+            padding: 10px 8px;
+            font-size: 19px;
+            line-height: 1.18;
+        }
+
+        /* 헤더 */
+        .main-score-table thead th,
+        .group-score-table thead th {
+            font-size: 20px;
+            font-weight: 900;
+            background: #edf3f9 !important;
+            color: #1f2937;
+            border-bottom: 2px solid #aebdce !important;
+            letter-spacing: -0.02em;
+        }
+
+        .main-score-table .team-name,
+        .group-score-table .team-name {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        /* 행 구분을 위해 아주 연한 줄무늬 */
+        .main-score-table tbody tr:nth-child(even) td,
+        .group-score-table tbody tr:nth-child(even) td {
+            background: #f8fbff !important;
+        }
+
+        .main-score-table tbody tr:nth-child(odd) td,
+        .group-score-table tbody tr:nth-child(odd) td {
+            background: #ffffff !important;
+        }
+
+        /* 항목명 */
+        .category-name,
+        .main-score-table tbody td:first-child,
+        .group-score-table tbody td:first-child {
+            font-size: 18px;
+            font-weight: 800;
+            color: #334155;
+        }
+
+        .category-cell {
+            gap: 8px;
+        }
+
+        /* 현재 점수 숫자 */
+        .score-val {
+            min-width: 42px;
+            font-size: 21px;
+            line-height: 1;
+            font-weight: 900;
+            color: #111827;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* 점수 증감 버튼 */
+        .arrow-btn {
+            min-width: 38px;
+            min-height: 34px;
+            padding: 6px 9px;
+            font-size: 14px;
+            font-weight: 800;
+            border-radius: 8px;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .arrow-btn:hover {
+            background: #e0edff;
+            border-color: #93baf1;
+        }
+
+        /* 삭제/초기화 버튼도 표 크기에 맞게 */
+        .delete-btn {
+            padding: 6px 10px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .col-reset-btn {
+            width: auto;
+            min-width: 92px;
+            max-width: none;
+            padding: 7px 10px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .team-reset-row td,
+        .team-reset-row button {
+            font-size: 13px;
+        }
+
+        /* 메인 총점 */
+        .total-row {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .main-score-table tfoot .total-row td {
+            padding: 13px 8px !important;
+            font-size: 22px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .main-score-table tfoot .total-row td:first-child {
+            font-size: 20px;
+        }
+
+        /* 순위 아이콘 */
+        .group-rank-strip-spacer,
+        .group-rank-strip-cell {
+            min-height: 42px;
+        }
+
+        .group-rank-icon {
+            font-size: 34px;
+        }
+
+        /* 이전기록 점수 숫자 */
+        .group-score-table tbody td:not(:first-child) {
+            font-size: 20px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* 최종점수 행 */
+        .group-score-table .final-score-row td {
+            padding: 13px 8px !important;
+            border-top: 3px solid #e3b50a !important;
+            border-bottom: 3px solid #e3b50a !important;
+        }
+
+        .final-score-label,
+        .print-record .final-score-label {
+            font-size: 34px !important;
+            line-height: 1 !important;
+            font-weight: 900 !important;
+        }
+
+        .final-score-chip,
+        .print-record .final-score-chip {
+            min-width: 104px !important;
+            padding: 9px 14px !important;
+            font-size: 30px !important;
+            line-height: 1 !important;
+            font-weight: 900 !important;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* 인터렉션 영역도 메인 점수판과 크기감 통일 */
+        #indTable th,
+        #indTable td {
+            padding: 13px 10px;
+            font-size: 18px;
+        }
+
+        #indTable .score-val {
+            font-size: 20px;
+        }
+
+        .header-bottom h3 {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        /* 화면 버튼 가독성 */
+        .header-actions .btn,
+        .history-toolbar .btn,
+        .toolbar-actions .btn {
+            font-size: 15px;
+            padding: 10px 14px;
+        }
+
+        .section-label {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .print-date {
+            font-size: 18px;
+        }
+
+        /* JPG 미리보기에서도 큰 글씨 유지 */
+        .print-record .group-score-table th,
+        .print-record .group-score-table td {
+            font-size: 19px;
+            padding: 10px 8px;
+        }
+
+        .print-record .group-score-table thead th,
+        .print-record .group-score-table .team-name {
+            font-size: 20px;
+        }
+
+        .print-record .group-score-table tbody td:not(:first-child) {
+            font-size: 20px;
+        }
+
         @media (max-width: 900px) {
             body { padding: 10px; }
+
+            .main-score-card,
+            .record-group-card {
+                aspect-ratio: auto;
+                min-height: 0;
+                padding: 14px;
+            }
+
+            .main-score-table th,
+            .main-score-table td,
+            .group-score-table th,
+            .group-score-table td {
+                font-size: 15px;
+                padding: 8px 5px;
+            }
+
+            .main-score-table thead th,
+            .group-score-table thead th,
+            .main-score-table .team-name,
+            .group-score-table .team-name {
+                font-size: 16px;
+            }
+
+            .score-val {
+                font-size: 17px;
+            }
+
+            .final-score-label,
+            .print-record .final-score-label {
+                font-size: 22px !important;
+            }
+
+            .final-score-chip,
+            .print-record .final-score-chip {
+                min-width: 72px !important;
+                font-size: 20px !important;
+            }
 
             .header-area,
             .header-bottom,
@@ -1474,7 +1773,7 @@
         <div class="history-toolbar">
             <div class="selection-info" id="selectionInfo">선택된 기록 0개</div>
             <button class="btn" id="toggleSelectAllBtn">전체 선택</button>
-            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 J/T 개별 저장</button>
+            <button class="btn btn-gold" id="selectedPdfBtn">🖼️ 선택 기록 J/T 개별 16:9 화면형 JPG 저장</button>
             <button class="btn btn-muted" id="allPdfBtn">🖼️ 전체 기록 한 장 JPG 저장</button>
             <button class="btn btn-danger-soft" id="clearHistoryBtn">전체 기록 삭제</button>
         </div>
